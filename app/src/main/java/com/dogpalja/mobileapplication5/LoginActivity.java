@@ -151,5 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                 return authenticationVariables;
             }
         };  //end of string Request
+
+        VolleyHandler.getInstance(getApplicationContext()).addRequestToQueue(stringRequest);
     }
 }
