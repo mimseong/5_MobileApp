@@ -180,4 +180,15 @@ public class SignUpActivity extends AppCompatActivity {
         VolleyHandler.getInstance(getApplicationContext()).addRequestToQueue(stringRequest);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        boolean isUserLoggedIn = SharedPrefrenceManager.getInstance(getApplicationContext()).isUserLoggeddIn();
+        if(isUserLoggedIn){
+            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+        } else{
+            //do nothing just wait
+        }
+    }
 }

@@ -155,4 +155,17 @@ public class LoginActivity extends AppCompatActivity {
 
         VolleyHandler.getInstance(getApplicationContext()).addRequestToQueue(stringRequest);
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        boolean isUserLoggedIn = SharedPrefrenceManager.getInstance(getApplicationContext()).isUserLoggeddIn();
+        if(isUserLoggedIn){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        } else{
+            //do nothing
+        }
+    }
 }
