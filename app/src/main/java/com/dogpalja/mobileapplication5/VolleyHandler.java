@@ -9,7 +9,7 @@ import com.android.volley.toolbox.Volley;
 public class VolleyHandler {
 
     private RequestQueue mrequestQueue;
-    private Context mcontext;
+    private static Context mcontext;
     private static VolleyHandler mvolleyHandler;
 
     private VolleyHandler(Context mcontext) {
