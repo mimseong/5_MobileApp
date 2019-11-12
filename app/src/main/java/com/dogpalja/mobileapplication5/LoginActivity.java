@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,11 +30,10 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     LinearLayout mLoginContainer;
+
     EditText username_et, password_et;
-    ProgressBar mProgressBar;
     Button login_btn;
     TextView sign_up_btn, forgot_pass_btn;
-
     ProgressDialog mProgressDialog;
 
     @Override
@@ -44,9 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginContainer = (LinearLayout) findViewById(R.id.login_container);
         username_et = (EditText) findViewById(R.id.user_name);
         password_et = (EditText) findViewById(R.id.user_password);
-
-        mProgressBar = new ProgressBar(this);
-
         sign_up_btn = (TextView) findViewById(R.id.sign_up_btn);
         forgot_pass_btn = (TextView) findViewById(R.id.forgot_pass_btn);
 
@@ -101,8 +98,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(TextUtils.isEmpty(password)){
-            username_et.setError("비밀번호를 적어주세요");
-            username_et.requestFocus();
+            password_et.setError("비밀번호를 적어주세요");
+            password_et.requestFocus();
             mProgressDialog.dismiss();
             return;
         }
@@ -116,11 +113,14 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
 
                             if(!jsonObject.getBoolean("error")){
+                                mProgressDialog.dismiss();
+
                                 JSONObject jsonObjectUser = jsonObject.getJSONObject(("user"));
 
                                 User user = new User(jsonObjectUser.getInt("id"), jsonObjectUser.getString("email"), jsonObjectUser.getString("username"));
 
                                 //store user data inside sharedprefrences
+                                SharedPrefrenceManager.getInstance(getApplicationContext()).storeUserData(user);
 
                                 //let user in
                                 finish();
@@ -140,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        mProgressDialog.dismiss();
                     }
                 }
         ){
