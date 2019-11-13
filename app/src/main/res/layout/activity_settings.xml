@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/settings"
+    android:padding="40dp"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="16dp"
+        android:text="환경설정"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/settings_text"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_email_black"
+        android:drawablePadding="10dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="70dp"
+        android:text="이메일 문의"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:id="@+id/contact_us"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_person_black"
+        android:drawablePadding="10dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="15dp"
+        android:text="개발자 정보"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:id="@+id/developer_info"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_apps_black_24dp"
+        android:drawablePadding="15dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:text="앱 정보"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:id="@+id/app_info"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_favorite_black_24dp"
+        android:drawablePadding="15dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:text="응원하기"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:id="@+id/cheer_up"
+        />
+
+</LinearLayout>
