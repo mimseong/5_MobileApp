@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:id="@+id/relLayout2">
+
+
+            <!-- start of upper part -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:id="@+id/upper_part_layout">
+
+                <!-- 프로필 이미지 -->
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    tools:ignore="Suspicious0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_weight="25">
+
+                    <!--android:src="@drawable/profile"-->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/profile_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/black"
+                        android:layout_centerVertical="true"/>
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <!-- end of upper part -->
+
+            <!-- start of middle part -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/upper_part_layout"
+                android:orientation="vertical"
+                android:id="@+id/middle_part_layout"
+                android:padding="15dp"
+                android:background="@color/background">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="이름"
+                    android:textColorHint="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:id="@+id/display_name"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="강아지 소개"
+                    android:textColorHint="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/description"/>
+
+
+            </LinearLayout>
+            <!-- end of middle part -->
+
+
+            <!-- start of lower part -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lower_part_layout"
+                android:layout_below="@id/middle_part_layout"
+                android:layout_marginBottom="1dp">
+
+                <GridView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/images_grid_layout"
+                    android:numColumns="3"
+                    android:verticalSpacing="2dp"
+                    android:horizontalSpacing="2dp"
+                    android:stretchMode="columnWidth">
+
+                </GridView>
+
+            </RelativeLayout>
+            <!-- end of lower part -->
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</merge>
