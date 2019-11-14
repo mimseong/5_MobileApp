@@ -9,14 +9,45 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar_iv"
+                android:layout_gravity="center"
+                android:src="@drawable/dog"/>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_fragment_content">
+
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
     <!--android:layout_gravity="start"-->
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:menu="@menu/nav_menu"
-
+        android:layout_gravity="start"
         android:id="@+id/main_nav_view"
         app:headerLayout="@layout/nav_header">
     </com.google.android.material.navigation.NavigationView>

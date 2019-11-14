@@ -3,6 +3,7 @@ package com.dogpalja.mobileapplication5;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -32,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener((mActionBarDrawerToggle));
         mActionBarDrawerToggle.syncState();
+
+        setSupportActionBar((Toolbar)findViewById(R.id.my_toolbar));
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_menu);
 
         //listener for navigation view
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -69,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        boolean isUserLoggedIn = SharedPrefrenceManager.getInstance(getApplicationContext()).isUserLoggeddIn();
-        if(!isUserLoggedIn){    //사용자가 로그인 상태가 아니라면 로그인 창으로 이동
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        } else{
-            //do nothing just stay here
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        boolean isUserLoggedIn = SharedPrefrenceManager.getInstance(getApplicationContext()).isUserLoggeddIn();
+//        if(!isUserLoggedIn){    //사용자가 로그인 상태가 아니라면 로그인 창으로 이동
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        } else{
+//            //do nothing just stay here
+//        }
+//    }
 }
