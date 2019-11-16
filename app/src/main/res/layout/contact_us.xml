@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/contact_us"
+    android:padding="40dp"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="16dp"
+        android:text="문의하기"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/contact_us_text"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="16dp"
+        android:text="어떻게 도와드릴까요?"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        android:id="@+id/how_can_i_help"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:paddingTop="20dp"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:padding="20dp"
+            android:drawableTop="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:text="전화"
+            android:id="@+id/btn_call"
+            android:layout_weight="1"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:padding="20dp"
+            android:drawableTop="@drawable/ic_email_black"
+            android:drawablePadding="10dp"
+            android:text="이메일"
+            android:id="@+id/btn_mail"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
