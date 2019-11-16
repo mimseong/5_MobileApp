@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,30 +41,48 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_menu);
 
+        //Default fragment to be display
+        //changeFragmentDisplay(R.id.);
+
+
         //listener for navigation view
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.healthcheck){
-                    Toast.makeText(MainActivity.this, "healthcheck", Toast.LENGTH_LONG).show();
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                    return true;
-                }
-                if(item.getItemId() == R.id.settings){
-                    Toast.makeText(MainActivity.this, "settings", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else if(item.getItemId() == R.id.logout){
-                    Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
-                }
-
-                return false;
+                return changeFragmentDisplay(item);
             }
         });
+    }
+
+    private boolean changeFragmentDisplay(MenuItem item){
+
+        Fragment fragment = null;
+
+        if(item.getItemId() == R.id.healthcheck){
+            fragment = new HealthFragment();
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        if(item.getItemId() == R.id.settings){
+            fragment = new SettingFragment();
+            return true;
+        }
+        else if(item.getItemId() == R.id.logout){
+            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
+        }
+
+        if(fragment != null){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.main_fragment_content, fragment);
+            ft.commit();
+        }
+
+
+        return false;
     }
 
     @Override
