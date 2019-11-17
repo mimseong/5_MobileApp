@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="1dp"
             android:padding="20dp"
-            android:drawableTop="@drawable/ic_call_black_24dp"
+            android:drawableTop="@drawable/ic_call_black"
             android:drawablePadding="10dp"
             android:text="전화"
             android:id="@+id/btn_call"
