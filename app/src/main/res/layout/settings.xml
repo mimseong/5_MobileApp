@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+ <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_live_help_black"
+        android:drawableLeft="@drawable/contact_us-01"
         android:drawablePadding="10dp"
         android:layout_gravity="left"
         android:layout_marginTop="70dp"
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_person_black"
+        android:drawableLeft="@drawable/developer_info-01"
         android:drawablePadding="10dp"
         android:layout_gravity="left"
         android:layout_marginTop="15dp"
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_apps_black"
+        android:drawableLeft="@drawable/app_info-01"
         android:drawablePadding="15dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
@@ -63,7 +63,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_favorite_black"
+        android:drawableLeft="@drawable/cheer-01"
         android:drawablePadding="15dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
