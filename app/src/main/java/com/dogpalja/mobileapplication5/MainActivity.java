@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
     NavigationView mNavigationView;
+    BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         //layout variables
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
         mNavigationView = findViewById(R.id.main_nav_view);
+        mBottomNavigationView = findViewById(R.id.bottom_navigation);
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener((mActionBarDrawerToggle));
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_menu);
 
         //Default fragment to be display
-        //changeFragmentDisplay(R.id.);
+        //changeFragmentDisplay(R.id.moment);
 
 
         //listener for navigation view
@@ -52,12 +55,20 @@ public class MainActivity extends AppCompatActivity {
                 return changeFragmentDisplay(item);
             }
         });
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return changeFragmentDisplay(item);
+            }
+        });
     }
 
-    private boolean changeFragmentDisplay(MenuItem item){
 
+    private boolean changeFragmentDisplay(MenuItem item){
         Fragment fragment = null;
 
+        ///in toolbar
         if(item.getItemId() == R.id.healthcheck){
             fragment = new HealthFragment();
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -71,10 +82,23 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
             return true;
         }
+
+        ///in bottom navigation view
+        else if(item.getItemId() == R.id.moment){
+            fragment = new MomentFragment();
+            return true;
+        }
+        else if(item.getItemId() == R.id.camera){
+            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else if(item.getItemId() == R.id.map){
+            fragment = new MapFragment();
+            return true;
+        }
         else {
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
         }
-
         if(fragment != null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.main_fragment_content, fragment);
