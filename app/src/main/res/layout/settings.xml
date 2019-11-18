@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/contact_us-01"
+        android:drawableLeft="@drawable/contact_us"
         android:drawablePadding="10dp"
         android:layout_gravity="left"
         android:layout_marginTop="70dp"
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/developer_info-01"
+        android:drawableLeft="@drawable/developer_info"
         android:drawablePadding="10dp"
         android:layout_gravity="left"
         android:layout_marginTop="15dp"
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/app_info-01"
+        android:drawableLeft="@drawable/app_info"
         android:drawablePadding="15dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
@@ -63,7 +63,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/cheer-01"
+        android:drawableLeft="@drawable/cheer"
         android:drawablePadding="15dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
