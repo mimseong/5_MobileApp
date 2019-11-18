@@ -34,14 +34,17 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/main_fragment_content">
+            android:id="@+id/main_fragment_content"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_below="@+id/my_toolbar">
         </FrameLayout>
 
+        <!-- android:background="?android:attr/windowBackground" -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
+            android:background="@color/white"
             app:itemIconTint="@color/colorPrimary"
             app:menu="@menu/bottom_navigation"
             android:layout_alignParentBottom="true"/>
@@ -49,6 +52,7 @@
 
 
     <!--android:layout_gravity="start"-->
+    <!-- 이거 있어야 카테고리 옆으로 숨어짐 -->
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
