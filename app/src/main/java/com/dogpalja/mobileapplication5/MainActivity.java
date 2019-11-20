@@ -46,67 +46,77 @@ public class MainActivity extends AppCompatActivity {
 
         //Default fragment to be display
         //changeFragmentDisplay(R.id.moment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_content, new MomentFragment()).commit();
 
 
         //listener for navigation view
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return changeFragmentDisplay(item);
+                changeFragmentDisplay(item);
+                return true;
             }
         });
 
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return changeFragmentDisplay(item);
-            }
-        });
+        mBottomNavigationView.setOnNavigationItemSelectedListener(navListner);
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener navListner =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment fragment = null;
 
-    private boolean changeFragmentDisplay(MenuItem item){
+                    ///in bottom navigation view
+                    if(item.getItemId() == R.id.moment){
+                        fragment = new MomentFragment();
+
+                    }
+                    else if(item.getItemId() == R.id.camera){
+                        Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_LONG).show();
+
+                    }
+                    else if(item.getItemId() == R.id.map){
+                        fragment = new MapFragment();
+
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    }
+
+                    if(fragment != null)
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_content, fragment).commit();
+
+                    return true;
+                }
+            };
+
+
+    private void changeFragmentDisplay(MenuItem item){
         Fragment fragment = null;
 
         ///in toolbar
         if(item.getItemId() == R.id.healthcheck){
             fragment = new HealthFragment();
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-            return true;
         }
-        if(item.getItemId() == R.id.settings){
+        else if(item.getItemId() == R.id.settings){
             fragment = new SettingFragment();
-            return true;
         }
         else if(item.getItemId() == R.id.logout){
             Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        ///in bottom navigation view
-        else if(item.getItemId() == R.id.moment){
-            fragment = new MomentFragment();
-            return true;
-        }
-        else if(item.getItemId() == R.id.camera){
-            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        else if(item.getItemId() == R.id.map){
-            fragment = new MapFragment();
-            return true;
         }
         else {
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
         }
+
+        //hide naviagtion drawer
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
         if(fragment != null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.main_fragment_content, fragment);
             ft.commit();
         }
-
-
-        return false;
     }
 
     @Override
