@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     else if(item.getItemId() == R.id.camera){
-                        Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_LONG).show();
+                        fragment = new CameraFragment();
 
                     }
                     else if(item.getItemId() == R.id.map){
