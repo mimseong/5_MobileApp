@@ -83,7 +83,7 @@ public class CameraFragment extends Fragment {
     public void capturePhoto() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String imageName = "image.jpg";
-        mImageUri = Uri.fromFile((new File(Environment.getExternalStorageDirectory(), imageName));
+        mImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageName));
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
         startActivityForResult(cameraIntent, CAPTURE_IMAGE);
     }
