@@ -29,9 +29,9 @@
                     android:layout_width="0dp"
                     tools:ignore="Suspicious0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="25">
 
                     <!--android:src="@drawable/profile"-->
@@ -40,7 +40,7 @@
                         android:id="@+id/profile_image"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-
+                        android:src="@drawable/profile"
                         app:civ_border_width="2dp"
                         app:civ_border_color="@color/black"
                         android:layout_centerVertical="true"/>
@@ -60,7 +60,7 @@
                 android:orientation="vertical"
                 android:id="@+id/middle_part_layout"
                 android:padding="15dp"
-                android:background="@color/background">
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -87,6 +87,7 @@
 
             <!-- start of lower part -->
             <RelativeLayout
+                android:background="#f0f0f0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/lower_part_layout"
