@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
             return;
         }
-//////
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.login_api,
                 new Response.Listener<String>() {
                     @Override
