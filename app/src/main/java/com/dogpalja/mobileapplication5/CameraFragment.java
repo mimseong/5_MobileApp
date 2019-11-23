@@ -1,6 +1,8 @@
 package com.dogpalja.mobileapplication5;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,22 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.content.pm.PackageManager;
-
-import java.io.File;
-import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
 
+
 public class CameraFragment extends Fragment {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
 
-    Button upload_btn, capture_btn;
+    Button moment_camera_btn, essay_camera_btn;
     ImageView captured_iv;
 
-    final int CAPTURE_IMAGE = 1;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -46,11 +44,42 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        upload_btn = (Button) view.findViewById(R.id.upload_btn);
-        capture_btn = (Button) view.findViewById(R.id.capture_btn);
-        captured_iv = (ImageView) view.findViewById(R.id.captured_iv);
+//        moment_camera_btn = (Button) view.findViewById(R.id.moment_camera_btn);
+//        essay_camera_btn = (Button) view.findViewById(R.id.essay_camera_btn);
+//
+//        captured_iv = (ImageView) view.findViewById(R.id.captured_iv);
+
+        //button click
+        moment_camera_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if system version >= marshmallow, request runtime permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    //if(che)
+                }
+
+
+            }
+        });
 
         return view;
+    }
+
+    public void takePicture(View view){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(takePictureIntent.resolveActivity(getContext().getPackageManager()) != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            captured_iv.setImageBitmap(imageBitmap);
+        }
     }
 
 
