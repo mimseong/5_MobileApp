@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar)findViewById(R.id.my_toolbar));
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.category);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_category);
 
         //Default fragment to be display
         //changeFragmentDisplay(R.id.moment);
