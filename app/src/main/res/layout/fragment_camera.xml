@@ -4,48 +4,139 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="40dp"
     tools:context=".CameraFragment">
 
-
-
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_gravity="left"
+        android:layout_marginTop="20dp"
+        android:text="사진 촬영"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:id="@+id/camera_text"
+        />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="사진촬영"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:id="@+id/capture_btn"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="OK"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:id="@+id/upload_btn"/>
-
-
-    </LinearLayout>
-
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:id="@+id/captured_iv"/>
+        android:paddingTop="40dp"
+        >
+
+        <ImageView
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/moment_image"
+            android:id="@+id/moment_camera_btn"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:paddingRight="10dp"
+            android:layout_alignLeft="@+id/moment_camera_btn"
+            android:layout_alignTop="@+id/moment_camera_btn"
+            android:layout_alignBottom="@+id/moment_camera_btn"
+            >
+
+            <TextView
+                android:id="@+id/moment_camera_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="bottom"
+                android:text="반려견과의 순간을 기록하는,"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                />
+
+            <TextView
+                android:id="@+id/moment_camera_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="top"
+                android:text="모멘트 촬영"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/essay_image"
+            android:id="@+id/essay_camera_btn"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:paddingRight="10dp"
+            android:layout_alignLeft="@+id/essay_camera_btn"
+            android:layout_alignTop="@+id/essay_camera_btn"
+            android:layout_alignBottom="@+id/essay_camera_btn"
+            >
+
+            <TextView
+                android:id="@+id/essay_camera_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="left"
+                android:gravity="bottom"
+                android:text="반려견과의 추억을 기록하는,"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#595959"
+                />
+
+            <TextView
+                android:id="@+id/essay_camera_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:layout_gravity="left"
+                android:gravity="top"
+                android:text="에세이 촬영"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:textColor="#404040"
+                />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>
