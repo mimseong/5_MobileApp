@@ -292,6 +292,7 @@
         android:layout_alignBottom="@+id/now_edit"
         android:layout_toRightOf="@id/now_edit"
         android:layout_marginLeft="4sp"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:text="kg"/>
@@ -333,6 +334,7 @@
         android:layout_alignBottom="@+id/before_edit"
         android:layout_toRightOf="@id/before_edit"
         android:layout_marginLeft="4sp"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:text="kg"/>
