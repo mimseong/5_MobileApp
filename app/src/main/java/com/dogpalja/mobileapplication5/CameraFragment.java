@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import static android.app.Activity.RESULT_OK;
@@ -18,7 +19,8 @@ import static android.app.Activity.RESULT_OK;
 public class CameraFragment extends Fragment {
 
     private ImageView imageView;
-    private static final int REQUEST_IMAGE_CAPTURE = 101;
+    private Button capture_btn;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
 
     public CameraFragment() {
@@ -40,7 +42,16 @@ public class CameraFragment extends Fragment {
         //테스트용으로 만든 xml파일 임시로 붙임
         View view = inflater.inflate(R.layout.test_camera, container, false);
 
-        imageView = view.findViewById(R.id.imageView);
+        imageView = (ImageView) view.findViewById(R.id.capture_iv);
+        capture_btn = (Button) view.findViewById(R.id.capture_btn);
+
+        capture_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cInt, REQUEST_IMAGE_CAPTURE);
+            }
+        });
 
         return view;
     }
@@ -56,7 +67,7 @@ public class CameraFragment extends Fragment {
     //미리보기 이미지 가져오기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
