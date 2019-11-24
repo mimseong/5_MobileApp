@@ -9,9 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="사진촬영"
-        android:onClick="takePicture"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="55dp"/>
+        android:layout_marginTop="55dp"
+        android:id="@+id/capture_btn"/>
 
     <ImageView
         android:layout_width="250dp"
@@ -19,7 +19,7 @@
         android:src="@drawable/ic_insert_photo_gray"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="55dp"
-        android:id="@+id/imageView"/>
+        android:id="@+id/capture_iv"/>
 
 
 </LinearLayout>
