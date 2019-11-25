@@ -13,13 +13,13 @@
         android:layout_marginTop="55dp"
         android:id="@+id/capture_btn"/>
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/ic_insert_photo_gray"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="원본사진 보기"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="55dp"
-        android:id="@+id/capture_iv"/>
+        android:id="@+id/show_img_btn"/>
 
 
 </LinearLayout>
