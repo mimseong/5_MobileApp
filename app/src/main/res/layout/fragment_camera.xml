@@ -25,12 +25,14 @@
         android:paddingTop="40dp"
         >
 
-        <ImageView
+        <ImageButton
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
             android:src="@drawable/moment_image"
             android:id="@+id/moment_camera_btn"
+            android:background="#00ff0000"
             />
 
         <LinearLayout
@@ -84,12 +86,14 @@
         android:layout_marginTop="20dp"
         >
 
-        <ImageView
+        <ImageButton
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
             android:src="@drawable/essay_image"
             android:id="@+id/essay_camera_btn"
+            android:background="#00ff0000"
             />
 
         <LinearLayout

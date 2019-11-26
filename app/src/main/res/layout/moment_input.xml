@@ -97,13 +97,14 @@
             android:layout_height="20dp"
             android:src="@drawable/ic_chat_2"
             />
-        <TextView
+        <Button
             android:id="@+id/moment_comment_txt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:text="클릭하여 코멘트를 남기세요."
             android:layout_marginLeft="10dp"
+            android:background="#00ff0000"
             />
 
     </LinearLayout>
