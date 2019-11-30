@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == R.id.logout){
             Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
+            SharedPrefrenceManager sharedPrefrenceManager = SharedPrefrenceManager.getInstance(getApplicationContext());
+            sharedPrefrenceManager.logUserOut();
         }
         else {
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
