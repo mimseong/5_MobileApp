@@ -4,16 +4,10 @@
     android:layout_width="wrap_content"
     android:id="@+id/sto_m">
 
-    <fragment
-        android:id="@+id/storymap"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapview"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <Button
-        android:id="@+id/look"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="사진촬영 버튼"></Button>
 </RelativeLayout>

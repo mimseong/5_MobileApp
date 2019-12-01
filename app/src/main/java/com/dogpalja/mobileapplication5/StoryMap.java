@@ -28,7 +28,7 @@ public class StoryMap extends FragmentActivity implements OnMapReadyCallback, Go
         setContentView(R.layout.activity_story_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.storymap);
+                .findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
     }
 
