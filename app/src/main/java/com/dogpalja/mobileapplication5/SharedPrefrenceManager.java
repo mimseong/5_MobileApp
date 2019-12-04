@@ -54,7 +54,7 @@ public class SharedPrefrenceManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+
     }
 
     public User getUserData() {
