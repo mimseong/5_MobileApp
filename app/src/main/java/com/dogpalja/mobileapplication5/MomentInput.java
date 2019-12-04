@@ -1,7 +1,7 @@
 package com.dogpalja.mobileapplication5;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.support.v4.media.session.PlaybackStateCompat;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +11,7 @@ public class MomentInput extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.moment_input);
+        setContentView(R.layout.show_img_result);
 
         // 커스텀 다이얼로그에서 입력한 메시지를 출력할 TextView 를 준비한다.
         final TextView moment_comment_txt = (TextView) findViewById(R.id.moment_comment_txt);
