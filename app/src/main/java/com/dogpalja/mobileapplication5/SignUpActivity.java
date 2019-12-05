@@ -91,28 +91,28 @@ public class SignUpActivity extends AppCompatActivity {
 
         //값이 비어있다면 바로 종료
         if(TextUtils.isEmpty(email)){
-            email_et.setError("Please fill in this field");
+            email_et.setError("이메일을 적어주세요");
             email_et.requestFocus();
             mProgressDialog.dismiss();
             return;
         }
         //값이 비어있다면 바로 종료
         if(TextUtils.isEmpty(username)){
-            username_et.setError("Please fill in this field");
+            username_et.setError("아이디를 적어주세요");
             username_et.requestFocus();
             mProgressDialog.dismiss();
             return;
         }
         //값이 비어있다면 바로 종료
-        if(TextUtils.isEmpty(password)){
-            password_et.setError("Please fill in this field");
+        if(TextUtils.isEmpty(password) || password.length() < 8){
+            password_et.setError("비밀번호는 8자리 이상이여야 합니다");
             password_et.requestFocus();
             mProgressDialog.dismiss();
             return;
         }
         //값이 비어있다면 바로 종료
         if(TextUtils.isEmpty(password_confirm)){
-            password_confirm_et.setError("Please fill in this field");
+            password_confirm_et.setError("비밀번호를 한번 더 적어주세요");
             password_confirm_et.requestFocus();
             mProgressDialog.dismiss();
             return;
