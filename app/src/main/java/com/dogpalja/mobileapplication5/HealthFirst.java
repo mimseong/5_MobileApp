@@ -3,6 +3,8 @@ package com.dogpalja.mobileapplication5;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,6 +17,7 @@ public class HealthFirst extends AppCompatActivity {
     //d는 날짜 입력.
     Button name_b, vaccin1_c, vaccin2_c, vaccin3_c, vaccin4_c, heart_c, rabies_c, id_c, insert_w, vomit_c, dia_c, nasal_c;
     //b는 버튼, c는 체크박스
+    String now, before;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,14 @@ public class HealthFirst extends AppCompatActivity {
         vomit_c = (Button) findViewById(R.id.vomit_check);
         dia_c = (Button) findViewById(R.id.diarrhea_check);
         nasal_c = (Button) findViewById(R.id.nasal_check);
+
+        insert_w.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                now = now_w.getText().toString();
+                return false;
+            }
+        });
 
     }
 }
