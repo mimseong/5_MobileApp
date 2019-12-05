@@ -2,6 +2,7 @@ package com.dogpalja.mobileapplication5;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,21 +31,36 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
 
 public class CameraFragment extends Fragment {
 
-    private ImageButton moment_camera_btn, essay_camera_btn;
+    //fragment_camera.xml의 모멘트 촬영, 에세이 촬영 버튼
+    ImageButton moment_camera_btn, essay_camera_btn;
 
+    //사진촬영 후 완료버튼, 사진 미리보기 이미지
     Button moment_ok_btn;
     ImageView moment_selected_photo;
+
     final int CAPTURE_IMAGE = 1 ,GALLARY_PICK = 2;
     Bitmap bitmap;
     String mStoryTitle, imageToString;
@@ -63,7 +80,6 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         moment_camera_btn = (ImageButton) view.findViewById(R.id.moment_camera_btn);
@@ -116,6 +132,7 @@ public class CameraFragment extends Fragment {
     }
 
     private void storyAndImageTitle(){
+        ////새 창 띄워서 코멘트 입력 받음
         final EditText editText = new EditText(getContext());
         editText.setTextColor(Color.BLACK);
         editText.setHint("Set Title/Tags for story");
@@ -125,6 +142,7 @@ public class CameraFragment extends Fragment {
         builder.setTitle("Story Title");
         builder.setCancelable(false);
         builder.setView(editText);
+        ////
 
         //ok를 눌렀을 때
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -169,37 +187,86 @@ public class CameraFragment extends Fragment {
 
     private void uploadStory(){
 
+        final String dateOfImage = dateOfImage();
+        final String currentTime = currentReadableTime();
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == CAPTURE_IMAGE){
-
-            if(resultCode == RESULT_OK){
+        User user = SharedPrefrenceManager.getInstance(getContext()).getUserData();
+        final String username = user.getUsername();
+        final int user_id = user.getId();
+        //final String profile_image = mProfileImage;
 
 
+        final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
 
-                if(mImageUri != null){
+        mProgressDialog.setTitle("Log In");
+        mProgressDialog.setMessage("잠시 기다려주세요..");
+        mProgressDialog.show();
 
-                    //convert uri to bitmap
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), mImageUri);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.upload_story_image,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-                        if(bitmap != null){
-                            moment_selected_photo.setImageBitmap(bitmap);
-                            Log.i("bitmap", bitmap.toString());
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            if(!jsonObject.getBoolean("error")){
+                                mProgressDialog.dismiss();
+
+                                JSONObject jsonObjectUser = jsonObject.getJSONObject(("image"));
+
+                                Toast.makeText(getContext(), jsonObject.getString("업로드가 완료되었습니다."), Toast.LENGTH_LONG).show();
+
+                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                ft.replace(R.id.main_fragment_content, new MomentFragment());
+                                ft.commit();
+
+                            } else {
+                                Toast.makeText(getContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch(JSONException e){
+                            e.printStackTrace();
+
                         }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    }
+                },
+                //에러났을 떄
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        mProgressDialog.dismiss();
                     }
                 }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> imageMap = new HashMap<>();
+                imageMap.put("image_name", dateOfImage);
+                imageMap.put("image_encoded", imageToString);
+                imageMap.put("title", mStoryTitle);
 
-
+                imageMap.put("time", currentTime);
+                imageMap.put("username", username);
+                imageMap.put("user_id", String.valueOf(user_id));
+                //imageMap.put("profile_image", profile_image);
+                return imageMap;
             }
-        }
+        };  //end of string Request
+
+        VolleyHandler.getInstance(getContext().getApplicationContext()).addRequestToQueue(stringRequest);
+    }
+
+    private String dateOfImage(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.toString();
+    }
+
+    private String currentReadableTime(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Date date = new Date(timestamp.getTime());
+        return date.toString();
     }
 }
