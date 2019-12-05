@@ -113,7 +113,7 @@
             android:text="2차">
         </CheckBox>
         <EditText
-            android:id="@+id/second_date"
+            android:id="@+id/vaccin2_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/vaccin2_check"
@@ -135,7 +135,7 @@
             android:text="3차">
         </CheckBox>
         <EditText
-            android:id="@+id/third_date"
+            android:id="@+id/vaccin3_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/vaccin3_check"
@@ -157,7 +157,7 @@
             android:text="4차">
         </CheckBox>
         <EditText
-            android:id="@+id/fourth_date"
+            android:id="@+id/vaccin4_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/vaccin4_check"
