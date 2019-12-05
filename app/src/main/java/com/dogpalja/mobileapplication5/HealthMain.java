@@ -21,15 +21,15 @@ public class HealthMain extends TabActivity {
         Intent intent;
 
 //각 탭 별로 액티비티 불러오기
-        TabHost.TabSpec tabSpecDog1 = tabHost.newTabSpec("Dog1").setIndicator("Dog1");
+        TabHost.TabSpec tabSpecDog1 = tabHost.newTabSpec("첫번째").setIndicator("Dog1");
         tabSpecDog1.setContent(R.layout.health_first);
         tabHost.addTab(tabSpecDog1);
 
-        TabHost.TabSpec tabSpecDog2 = tabHost.newTabSpec("Dog2").setIndicator("Dog2");
+        TabHost.TabSpec tabSpecDog2 = tabHost.newTabSpec("두번째").setIndicator("Dog2");
         tabSpecDog2.setContent(R.layout.health_second);
         tabHost.addTab(tabSpecDog2);
 
-        TabHost.TabSpec tabSpecDog3 = tabHost.newTabSpec("Dog3").setIndicator("Dog3");
+        TabHost.TabSpec tabSpecDog3 = tabHost.newTabSpec("세번째").setIndicator("Dog3");
         tabSpecDog3.setContent(R.layout.health_third);
         tabHost.addTab(tabSpecDog3);
 
