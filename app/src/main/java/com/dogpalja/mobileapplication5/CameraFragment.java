@@ -1,6 +1,7 @@
 package com.dogpalja.mobileapplication5;
 
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -65,6 +66,9 @@ public class CameraFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = ((MainActivity) getActivity()).getActionBar();
+        actionBar.hide();
 
     }
 
