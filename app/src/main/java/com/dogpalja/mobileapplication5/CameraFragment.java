@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -187,25 +186,41 @@ public class CameraFragment extends Fragment {
     }
 
     private void storyAndImageTitle(){
+        ////새 창 띄워서 코멘트 입력 받음
+        final EditText editText = new EditText(getContext());
+        editText.setTextColor(Color.BLACK);
+        editText.setHint("Set Title/Tags for story");
+        editText.setHintTextColor(Color.GRAY);
 
-        // 커스텀 다이얼로그에서 입력한 메시지를 출력할 TextView 를 준비한다.
-        final TextView moment_comment_txt = (TextView) getView().findViewById(R.id.moment_comment_txt); //findViewById(R.id.moment_comment_txt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Story Title");
+        builder.setCancelable(false);
+        builder.setView(editText);
+        ////
 
-        // 커스텀 다이얼로그를 호출할 버튼을 정의한다.
-        TextView button = (TextView) getView().findViewById(R.id.moment_comment_txt);
-
-        // 커스텀 다이얼로그 호출할 클릭 이벤트 리스너 정의
-        button.setOnClickListener(new View.OnClickListener() {
+        //ok를 눌렀을 때
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // 커스텀 다이얼로그를 생성한다. 사용자가 만든 클래스이다.
-                MomentCommentInput commentInput = new MomentCommentInput(getContext());
-
-                // 커스텀 다이얼로그를 호출한다.
-                // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                commentInput.callFunction(moment_comment_txt);
+            public void onClick(DialogInterface dialog, int which) {
+                if(OkToUpload) {
+                    mStoryTitle = editText.getText().toString();
+                    imageToString = convertImageToString();
+                    uploadStory();
+                }else{
+                    Toast.makeText(getContext(),"Please take a photo first!",Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+        //취소를 눌렀을 때
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
 
     }
 
