@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/upper_part_layout"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:background="#e5e5e5"/>
 
         <!-- Lower Relative Layout-->
         <RelativeLayout
@@ -60,6 +61,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="7dp"
                 android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
                 android:text="사진 촬영"
                 />
 
