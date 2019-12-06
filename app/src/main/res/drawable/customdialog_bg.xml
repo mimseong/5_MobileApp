@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item >
+        <!-- 사각형 지정 -->
+        <shape android:shape="rectangle">
+            <!-- 각 모서리 5dip 만큼 코너형식 -->
+            <corners android:radius="20dip" />
+            <!-- 배경색 -->
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+</selector>
