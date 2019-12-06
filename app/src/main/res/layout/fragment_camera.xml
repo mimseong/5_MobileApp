@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/upper_part_layout"
             android:scaleType="centerCrop"
-            android:background="#e5e5e5"/>
+            android:background="@drawable/captured_image"/>
 
         <!-- Lower Relative Layout-->
         <RelativeLayout
