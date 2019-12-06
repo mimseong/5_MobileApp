@@ -189,10 +189,10 @@ public class CameraFragment extends Fragment {
     private void storyAndImageTitle(){
 
         // 커스텀 다이얼로그에서 입력한 메시지를 출력할 TextView 를 준비한다.
-        final Button moment_comment_txt = (Button) getView().findViewById(R.id.moment_comment_txt); //findViewById(R.id.moment_comment_txt);
+        final TextView moment_comment_txt = (TextView) getView().findViewById(R.id.moment_comment_txt); //findViewById(R.id.moment_comment_txt);
 
         // 커스텀 다이얼로그를 호출할 버튼을 정의한다.
-        Button button = (Button) getView().findViewById(R.id.moment_comment_txt);
+        TextView button = (TextView) getView().findViewById(R.id.moment_comment_txt);
 
         // 커스텀 다이얼로그 호출할 클릭 이벤트 리스너 정의
         button.setOnClickListener(new View.OnClickListener() {
