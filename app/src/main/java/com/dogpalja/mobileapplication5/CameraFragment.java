@@ -67,9 +67,6 @@ public class CameraFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = ((MainActivity) getActivity()).getActionBar();
-        actionBar.hide();
-
     }
 
     @Override
