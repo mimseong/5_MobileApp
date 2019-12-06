@@ -1,7 +1,6 @@
 package com.dogpalja.mobileapplication5;
 
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -37,16 +36,18 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 
 
 public class CameraFragment extends Fragment {
 
-    ImageView story_image;
+    ImageView moment_selected_photo;
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
@@ -74,7 +75,7 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        story_image = (ImageView) view.findViewById(R.id.moment_selected_photo);
+        moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
@@ -103,6 +104,30 @@ public class CameraFragment extends Fragment {
                 storyAndImageTitle();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CAPTURE_IMAGE){
+            if(resultCode == RESULT_OK){
+
+                OkToUpload = true;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                    if(bitmap != null) {
+                        moment_selected_photo.setImageBitmap(bitmap);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(),"Now Click on Upload Button to Upload image",Toast.LENGTH_LONG).show();
+
+
+            }
+        }
+
     }
 
     private void capturePhoto(){
