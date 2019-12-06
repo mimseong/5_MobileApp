@@ -1,6 +1,7 @@
 package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,6 +24,8 @@ public class MomentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Intent intent1 = new Intent(getActivity(), SignUpPhotoActivity.class);
+        //startActivity(intent1);
     }
 
     @Override
