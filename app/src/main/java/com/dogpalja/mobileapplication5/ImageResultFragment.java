@@ -44,7 +44,7 @@ public class ImageResultFragment extends Fragment {
 
     Bitmap bitmap;
     String mStoryTitle, imageToString, mProfileImage;
-//    boolean OkToUpload;
+    boolean OkToUpload;
 
     public ImageResultFragment() {
         // Required empty public constructor
@@ -64,7 +64,7 @@ public class ImageResultFragment extends Fragment {
         moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
 
-//        OkToUpload = false;
+        OkToUpload = true;
 
         // Inflate the layout for this fragment
         return view;
@@ -78,8 +78,8 @@ public class ImageResultFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if(bundle != null){
-            Bitmap bitmap = getIntent().getExtras().getParcelable("image");
-
+            //Bitmap bitmap = getIntent().getExtras().getParcelable("image");
+            Bitmap bitmap = bundle.getParcelable("image");
             moment_selected_photo.setImageBitmap(bitmap);
         }
 
@@ -156,13 +156,13 @@ public class ImageResultFragment extends Fragment {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                if(OkToUpload) {
+                if(OkToUpload) {
                     mStoryTitle = editText.getText().toString();
                     imageToString = convertImageToString();
                     uploadStory();
-//                }else{
-//                    Toast.makeText(getContext(),"Please take a photo first!",Toast.LENGTH_LONG).show();
-//                }
+                }else{
+                    Toast.makeText(getContext(),"Please take a photo first!",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -190,10 +190,10 @@ public class ImageResultFragment extends Fragment {
 
     private void uploadStory(){
 
-//        if(!OkToUpload){
-//            Toast.makeText(getContext(),"업로드 할 이미지가 없습니다",Toast.LENGTH_LONG).show();
-//            return;
-//        }
+        if(!OkToUpload){
+            Toast.makeText(getContext(),"업로드 할 이미지가 없습니다",Toast.LENGTH_LONG).show();
+            return;
+        }
 
         final String dateOfImage = dateOfImage();
         final String currentTime = currentReadableTime();
@@ -266,6 +266,7 @@ public class ImageResultFragment extends Fragment {
         };  //end of string Request
 
         VolleyHandler.getInstance(getContext().getApplicationContext()).addRequestToQueue(stringRequest);
+        OkToUpload = false;
     }
 
     private String dateOfImage(){
