@@ -46,14 +46,13 @@ import java.util.Map;
 
 public class CameraFragment extends Fragment {
 
-    private ImageButton moment_camera_btn, essay_camera_btn;
-
     ImageView moment_selected_photo;
-    Button moment_ok_btn;
+    Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
     String mStoryTitle, imageToString, mProfileImage;
     boolean OkToUpload;
+
     final int CAPTURE_IMAGE = 1 ,GALLARY_PICK = 2;
 
     Uri mImageUri;
@@ -77,11 +76,9 @@ public class CameraFragment extends Fragment {
 
         moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
+        btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
         OkToUpload = true;
-
-        moment_camera_btn = (ImageButton) view.findViewById(R.id.moment_camera_btn);
-        essay_camera_btn = (ImageButton) view.findViewById(R.id.essay_camera_btn);
 
         return view;
 
@@ -93,14 +90,7 @@ public class CameraFragment extends Fragment {
 
         getProfileImage();
 
-        moment_camera_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                capturePhoto();
-            }
-        });
-
-        essay_camera_btn.setOnClickListener(new View.OnClickListener() {
+        btn_capture_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 capturePhoto();
