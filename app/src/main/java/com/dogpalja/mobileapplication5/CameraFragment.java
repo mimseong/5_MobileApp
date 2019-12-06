@@ -53,7 +53,7 @@ public class CameraFragment extends Fragment {
     String mStoryTitle, imageToString, mProfileImage;
     boolean OkToUpload;
 
-    final int CAPTURE_IMAGE = 1 ,GALLARY_PICK = 2;
+    final int CAPTURE_IMAGE = 1;
 
     Uri mImageUri;
 
@@ -78,7 +78,7 @@ public class CameraFragment extends Fragment {
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
-        OkToUpload = true;
+        OkToUpload = false;
 
         return view;
 
@@ -101,7 +101,6 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 storyAndImageTitle();
-
             }
         });
     }

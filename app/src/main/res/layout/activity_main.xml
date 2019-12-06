@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
-            android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -40,7 +39,8 @@
             android:layout_height="wrap_content"
             app:itemIconTint="@color/colorPrimary"
             app:menu="@menu/bottom_navigation"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:background="@color/background"/>
     </RelativeLayout>
 
 

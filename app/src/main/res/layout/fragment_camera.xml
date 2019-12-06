@@ -3,7 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingRight="30dp"
-    android:paddingLeft="30dp">
+    android:paddingLeft="30dp"
+    android:background="@color/background">
 
     <Button
         android:layout_width="50dp"
