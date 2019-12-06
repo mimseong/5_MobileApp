@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -53,8 +54,9 @@ public class CameraFragment extends Fragment {
     Bitmap bitmap;
     String mStoryTitle, imageToString, mProfileImage;
     boolean OkToUpload;
-
+    TextView moment_comment_btn;
     final int CAPTURE_IMAGE = 1;
+
 
     Uri mImageUri;
 
@@ -79,6 +81,8 @@ public class CameraFragment extends Fragment {
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
+        moment_comment_btn = (TextView) view.findViewById(R.id.moment_comment_txt);
+
         OkToUpload = false;
 
         return view;
@@ -98,12 +102,28 @@ public class CameraFragment extends Fragment {
             }
         });
 
-        moment_ok_btn.setOnClickListener(new View.OnClickListener() {
+//        moment_ok_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                storyAndImageTitle();
+//            }
+//        });
+
+
+        final TextView moment_comment_tv = (TextView) getView().findViewById(R.id.moment_comment_txt);
+
+        moment_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                storyAndImageTitle();
+            public void onClick(View view) {
+                MomentCommentInput commentInput = new MomentCommentInput(getContext());
+
+                commentInput.callFunction(moment_comment_tv);
+
+                //Toast.makeText(getContext(),"ttt",Toast.LENGTH_LONG).show();
             }
         });
+
+//moment_comment_tv.toString();
     }
 
     @Override
@@ -185,44 +205,7 @@ public class CameraFragment extends Fragment {
         VolleyHandler.getInstance(getContext().getApplicationContext()).addRequestToQueue(stringRequest);
     }
 
-    private void storyAndImageTitle(){
-        ////새 창 띄워서 코멘트 입력 받음
-        final EditText editText = new EditText(getContext());
-        editText.setTextColor(Color.BLACK);
-        editText.setHint("Set Title/Tags for story");
-        editText.setHintTextColor(Color.GRAY);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Story Title");
-        builder.setCancelable(false);
-        builder.setView(editText);
-        ////
-
-        //ok를 눌렀을 때
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(OkToUpload) {
-                    mStoryTitle = editText.getText().toString();
-                    imageToString = convertImageToString();
-                    uploadStory();
-                }else{
-                    Toast.makeText(getContext(),"Please take a photo first!",Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        //취소를 눌렀을 때
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.show();
-
-    }
 
     private String convertImageToString(){
 
