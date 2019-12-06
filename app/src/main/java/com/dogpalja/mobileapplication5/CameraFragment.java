@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -46,7 +45,7 @@ import java.util.Map;
 
 public class CameraFragment extends Fragment {
 
-    ImageView moment_selected_photo;
+    ImageView story_image;
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
@@ -74,7 +73,7 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
+        story_image = (ImageView) view.findViewById(R.id.moment_selected_photo);
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
