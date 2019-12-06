@@ -2,19 +2,25 @@ package com.dogpalja.mobileapplication5;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +38,12 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
 
     private Uri mImageCaptureUri;
     private ImageView iv_UserPhoto;
+    private TextView tv_name;
+    private TextView tv_sub_name;
     private int id_view;
     private String absoultePath;
+
+    //private Context context;
 
     //private DB_Manger dbmanger;
 
@@ -47,9 +57,16 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
         //dbmanger = new DB_Manger();
 
         iv_UserPhoto = (ImageView) this.findViewById(R.id.profile_image);
+        iv_UserPhoto.setOnClickListener(this);
+
+        tv_name = (TextView) this.findViewById(R.id.display_name);
+        tv_name.setOnClickListener(this);
+
+        tv_sub_name = (TextView) this.findViewById(R.id.description);
+        tv_sub_name.setOnClickListener(this);
+
         //ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
 
-        iv_UserPhoto.setOnClickListener(this);
     }
 
 
@@ -154,7 +171,7 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         id_view = v.getId();
-        if(v.getId() == R.id.profile_image) {
+        if(id_view == R.id.profile_image) {
             DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -181,6 +198,15 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
                     .setNeutralButton("앨범선택", albumListener)
                     .setNegativeButton("취소", cancelListener)
                     .show();
+        }
+        else if(id_view == R.id.display_name) {
+            final TextView name = (TextView) findViewById(id_view);
+            callFunction(name);
+
+        }
+        else if(id_view == R.id.description){
+            final TextView sub_name = (TextView) findViewById(id_view);
+            callFunction(sub_name);
         }
 
     }
@@ -214,5 +240,49 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void callFunction(final TextView main_label) {
+
+        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
+        final Dialog dlg = new Dialog(SignUpPhotoActivity.this);
+
+        // 액티비티의 타이틀바를 숨긴다.
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //커스텀 다이얼로그 배경 투명 처리
+        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        // 커스텀 다이얼로그의 레이아웃을 설정한다.
+        dlg.setContentView(R.layout.profile_name_dialog);
+
+        // 커스텀 다이얼로그를 노출한다.
+        dlg.show();
+
+        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
+        final EditText name = (EditText) dlg.findViewById(R.id.profile_name);
+        final Button okButton = (Button) dlg.findViewById(R.id.okButton);
+        final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
+                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                main_label.setText(name.getText().toString());
+                //Toast.makeText(context, "\"" +  name.getText().toString() + "\" 을 입력하였습니다.", Toast.LENGTH_SHORT).show();
+
+                // 커스텀 다이얼로그를 종료한다.
+                dlg.dismiss();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(context, "취소 했습니다.", Toast.LENGTH_SHORT).show();
+
+                // 커스텀 다이얼로그를 종료한다.
+                dlg.dismiss();
+            }
+        });
     }
 }
