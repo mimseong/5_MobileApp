@@ -100,36 +100,18 @@ public class CameraFragment extends Fragment {
                 bitmap =  (Bitmap) data.getExtras().get("data");
                 Toast.makeText(getContext(),"Now Click on Upload Button to Upload image",Toast.LENGTH_LONG).show();
                 if(bitmap != null) {
-                    // captured_iv.setImageBitmap(bitmap);
+                    ImageResultFragment imageResultFragment = new ImageResultFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("image",bitmap);  // bitmap is the captured image
+                    imageResultFragment.setArguments(bundle);
+
+
+                    // Go to the new fragment "ShowImageResultFragment"
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_content, imageResultFragment);
+                    ft.commit();
                 }
             }
         }
-
-
-        if(requestCode == GALLARY_PICK){
-            if(resultCode == RESULT_OK){
-                Uri uri =   data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                    Toast.makeText(getContext(),"Now Click on Upload Button to Upload image",Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // captured_iv.setImageBitmap(bitmap);
-            }
-        }
-
-        ImageResultFragment imageResultFragment = new ImageResultFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("image",bitmap);  // bitmap is the captured image
-        imageResultFragment.setArguments(bundle);
-
-
-        // Go to the new fragment "ShowImageResultFragment"
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_fragment_content, imageResultFragment);
-        ft.commit();
     }
-
-
 }
