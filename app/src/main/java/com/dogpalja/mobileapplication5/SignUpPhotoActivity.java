@@ -17,13 +17,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 
 
-public class SignUpPhotoActivity extends Activity implements View.OnClickListener {
+public class SignUpPhotoActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_iMAGE = 2;
@@ -45,9 +47,9 @@ public class SignUpPhotoActivity extends Activity implements View.OnClickListene
         //dbmanger = new DB_Manger();
 
         iv_UserPhoto = (ImageView) this.findViewById(R.id.profile_image);
-        ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
+        //ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
 
-        btn_agreeJoin.setOnClickListener(this);
+        iv_UserPhoto.setOnClickListener(this);
     }
 
 
