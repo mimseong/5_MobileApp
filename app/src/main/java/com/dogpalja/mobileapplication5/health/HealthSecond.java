@@ -73,7 +73,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eV1date.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일");
+                eV1date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일");
             }
         };
 
@@ -82,7 +82,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eV2date.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
+                eV2date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
             }
         };
 
@@ -91,7 +91,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eV3date.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
+                eV3date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
             }
         };
 
@@ -100,7 +100,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eV4date.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
+                eV4date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
             }
         };
 
@@ -109,7 +109,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eHdate.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
+                eHdate.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
             }
         };
 
@@ -118,7 +118,7 @@ public class HealthSecond extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                eRdate.setText(year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
+                eRdate.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
             }
         };
 
