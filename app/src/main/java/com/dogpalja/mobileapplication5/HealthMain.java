@@ -10,31 +10,38 @@ import android.widget.TabHost;
 
 public class HealthMain extends TabActivity {
 
+    TabHost tabs;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.health_main);
-//탭 호스트 정의
-        TabHost tabHost = getTabHost();
-        Resources res = getResources();
-        TabHost.TabSpec spec;
-        Intent intent;
 
-//각 탭 별로 액티비티 불러오기
-        TabHost.TabSpec tabSpecDog1 = tabHost.newTabSpec("첫번째").setIndicator("Dog1");
-        tabSpecDog1.setContent(R.layout.health_first);
-        tabHost.addTab(tabSpecDog1);
+        tabs = getTabHost();
+        tabs.getTabWidget().setStripEnabled(false);
 
-        TabHost.TabSpec tabSpecDog2 = tabHost.newTabSpec("두번째").setIndicator("Dog2");
-        tabSpecDog2.setContent(R.layout.health_second);
-        tabHost.addTab(tabSpecDog2);
+        TabHost.TabSpec tabSpec1 = tabs.newTabSpec("첫째");
+        tabSpec1.setIndicator("첫째", getResources().getDrawable(R.drawable.dog));
+        tabSpec1.setContent(new Intent(this, HealthFirst.class)); // Tab Content
+        tabs.addTab(tabSpec1);
 
-        TabHost.TabSpec tabSpecDog3 = tabHost.newTabSpec("세번째").setIndicator("Dog3");
-        tabSpecDog3.setContent(R.layout.health_third);
-        tabHost.addTab(tabSpecDog3);
+        TabHost.TabSpec tabSpec2 = tabs.newTabSpec("둘째");
+        tabSpec2.setIndicator("둘째", getResources().getDrawable(R.drawable.dog));
+        tabSpec2.setContent(new Intent(this, HealthSecond.class)); // Tab Content
+        tabs.addTab(tabSpec2);
 
-        tabHost.setCurrentTab(0); //초기 탭 설정
+
+        // Tab3 Setting
+        TabHost.TabSpec tabSpec3 = tabs.newTabSpec("셋째");
+        tabSpec3.setIndicator("셋째", getResources().getDrawable(R.drawable.dog));
+        tabSpec3.setContent(new Intent(this, HealthThird.class)); // Tab Content
+        tabs.addTab(tabSpec3);
+
+        tabs.setCurrentTab(0);  // 시작 탭의 위치
+
+        for (int i = 0; i < tabs.getTabWidget().getChildCount(); i++) {
+            tabs.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (70 * (getResources().getDisplayMetrics().density));
+            tabs.getTabWidget().getChildAt(i).getLayoutParams().width = (int) (60 * (getResources().getDisplayMetrics().density));
+        }
     }
-
-
 }
