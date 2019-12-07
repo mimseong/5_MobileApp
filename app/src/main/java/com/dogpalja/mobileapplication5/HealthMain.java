@@ -15,7 +15,7 @@ public class HealthMain extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.health_main);
+        setContentView(R.layout.health_check);
 
         tabs = getTabHost();
         tabs.getTabWidget().setStripEnabled(false);
