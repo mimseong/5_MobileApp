@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Health;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,11 +11,13 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HealthThird extends Activity {
+import com.dogpalja.mobileapplication5.R;
+
+public class HealthFirst extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.health_third);
+        setContentView(R.layout.health_first);
     }
 }

@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Moment;
 
 import android.content.Context;
 import android.util.AttributeSet;

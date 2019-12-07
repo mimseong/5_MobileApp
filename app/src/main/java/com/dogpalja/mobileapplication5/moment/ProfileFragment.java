@@ -1,5 +1,4 @@
-
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Moment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,15 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dogpalja.mobileapplication5.R;
 
 
-public class ContactFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    public ContactFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
-
-    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +29,7 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
 }

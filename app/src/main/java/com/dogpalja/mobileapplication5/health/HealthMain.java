@@ -1,10 +1,11 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Health;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+
+import com.dogpalja.mobileapplication5.R;
 
 @SuppressWarnings("deprecation")
 
