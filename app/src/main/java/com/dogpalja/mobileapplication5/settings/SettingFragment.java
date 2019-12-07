@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Settings;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.dogpalja.mobileapplication5.R;
 import com.google.android.material.navigation.NavigationView;
 
 

@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Moment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dogpalja.mobileapplication5.R;
 
 public class MomentCommentInput {
     private Context context;

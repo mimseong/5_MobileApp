@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Health;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dogpalja.mobileapplication5.R;
 
 public class HealthFirst extends Activity {
 

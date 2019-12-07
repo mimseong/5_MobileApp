@@ -1,10 +1,9 @@
 package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.android.volley.toolbox.StringRequest;
+import com.dogpalja.mobileapplication5.models.User;
 
 public class SharedPrefrenceManager {
 

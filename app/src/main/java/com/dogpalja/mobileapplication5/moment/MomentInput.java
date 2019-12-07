@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Moment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.dogpalja.mobileapplication5.R;
 
 public class MomentInput extends AppCompatActivity {
     @Override

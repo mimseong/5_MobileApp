@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5;
+package com.dogpalja.mobileapplication5.Health;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HealthThird extends Activity {
+import com.dogpalja.mobileapplication5.R;
+
+public class HealthSecond extends Activity {
 
     TextView vomit_s, tagNum;
     EditText eName, eV1date, eV2date, eV3date, eV4date, eHdate, eRdate, eNow, eBefore, TN;
@@ -37,7 +39,7 @@ public class HealthThird extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.health_third);
+        setContentView(R.layout.health_second);
 
         eName = (EditText) findViewById(R.id.name);
         eV1date = (EditText) findViewById(R.id.vaccin1_date);
@@ -138,9 +140,9 @@ public class HealthThird extends Activity {
         boolean checked = ((CheckBox) view).isChecked();
 
         if (checked) {
-            dialogView = (View) View.inflate(HealthThird.this,
+            dialogView = (View) View.inflate(HealthSecond.this,
                     R.layout.health_dialog, null);
-            AlertDialog.Builder dlg = new AlertDialog.Builder(HealthThird.this);
+            AlertDialog.Builder dlg = new AlertDialog.Builder(HealthSecond.this);
             dlg.setTitle("인식표 등록번호 입력");
             dlg.setView(dialogView);
             dlg.setPositiveButton("확인",
@@ -165,7 +167,7 @@ public class HealthThird extends Activity {
         if (checked) {
             final String[] vomitArray = new String[]{"흰색+거품", "노란색", "붉은색", "초록색", "사료색", "암적색"};
             AlertDialog.Builder dlg = new AlertDialog.Builder(
-                    HealthThird.this);
+                    HealthSecond.this);
             dlg.setTitle("가장 유사한 구토의 색 및 형태는?");
             dlg.setSingleChoiceItems(vomitArray, 0,
                     new DialogInterface.OnClickListener() {

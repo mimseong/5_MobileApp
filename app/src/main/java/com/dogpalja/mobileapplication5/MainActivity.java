@@ -11,10 +11,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.dogpalja.mobileapplication5.Health.HealthFragment;
+import com.dogpalja.mobileapplication5.Moment.MomentFragment;
+import com.dogpalja.mobileapplication5.Settings.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
