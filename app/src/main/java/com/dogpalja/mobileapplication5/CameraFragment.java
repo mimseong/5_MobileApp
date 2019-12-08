@@ -46,13 +46,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class CameraFragment extends Fragment {
 
-    SquareImageView moment_selected_photo;
+    //SquareImageView moment_selected_photo;
+    ImageView moment_selected_photo;
+
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
     String mStoryTitle, imageToString, mProfileImage;
     boolean OkToUpload;
-    TextView moment_comment_btn;
+    TextView moment_comment_btn, picture_day;
     final int CAPTURE_IMAGE = 1;
 
 
@@ -75,11 +77,15 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        moment_selected_photo = (SquareImageView) view.findViewById(R.id.moment_selected_photo);
+        //moment_selected_photo = (SquareImageView) view.findViewById(R.id.moment_selected_photo);
+        moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
+
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
+        picture_day = (TextView) view.findViewById(R.id.picture_day);
         moment_comment_btn = (TextView) view.findViewById(R.id.moment_comment_txt);
+
 
         OkToUpload = false;
 
@@ -108,7 +114,7 @@ public class CameraFragment extends Fragment {
                     mStoryTitle = moment_comment_tv.getText().toString();
 
                     //imageToString = convertImageToString();
-                    Toast.makeText(getContext(),mStoryTitle ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), mStoryTitle ,Toast.LENGTH_LONG).show();
                     //uploadStory();
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
@@ -134,7 +140,7 @@ public class CameraFragment extends Fragment {
 
         if(requestCode == CAPTURE_IMAGE){
             if(resultCode == RESULT_OK){
-
+                picture_day.setText(dateOfImage().substring(0, 16));
                 OkToUpload = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
@@ -144,7 +150,7 @@ public class CameraFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getContext(),"이제 업로드 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
 
 
             }
@@ -236,8 +242,7 @@ public class CameraFragment extends Fragment {
 
 
         final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-
-        mProgressDialog.setTitle("Log In");
+        mProgressDialog.setTitle("Uploading");
         mProgressDialog.setMessage("잠시 기다려주세요..");
         mProgressDialog.show();
 
