@@ -39,12 +39,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dogpalja.mobileapplication5.SquareImageView;
+
 import static android.app.Activity.RESULT_OK;
 
 
 public class CameraFragment extends Fragment {
 
-    ImageView moment_selected_photo;
+    SquareImageView moment_selected_photo;
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
@@ -73,7 +75,7 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
+        moment_selected_photo = (SquareImageView) view.findViewById(R.id.moment_selected_photo);
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
         btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
 
@@ -91,6 +93,7 @@ public class CameraFragment extends Fragment {
 
         getProfileImage();
 
+        final TextView moment_comment_tv = (TextView) getView().findViewById(R.id.moment_comment_txt);
         btn_capture_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,15 +101,20 @@ public class CameraFragment extends Fragment {
             }
         });
 
-//        moment_ok_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                storyAndImageTitle();
-//            }
-//        });
+        moment_ok_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(OkToUpload) {
+                    mStoryTitle = moment_comment_tv.getText().toString();
 
-
-        final TextView moment_comment_tv = (TextView) getView().findViewById(R.id.moment_comment_txt);
+                    //imageToString = convertImageToString();
+                    Toast.makeText(getContext(),mStoryTitle ,Toast.LENGTH_LONG).show();
+                    //uploadStory();
+                }else{
+                    Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         moment_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,11 +123,9 @@ public class CameraFragment extends Fragment {
 
                 commentInput.callFunction(moment_comment_tv);
 
-                //Toast.makeText(getContext(),"ttt",Toast.LENGTH_LONG).show();
             }
         });
 
-//moment_comment_tv.toString();
     }
 
     @Override
@@ -138,7 +144,7 @@ public class CameraFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getContext(),"Now Click on Upload Button to Upload image",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"이제 업로드 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
 
 
             }
