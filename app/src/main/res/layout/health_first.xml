@@ -119,7 +119,7 @@
                         android:text="1차"
                         android:onClick="OnClickDataPicker"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/vaccin1_date"
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!-- 정기접종 1차 끝 -->
 
@@ -145,7 +145,7 @@
                         android:text="2차"
                         android:onClick="OnClickDataPicker2"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/vaccin2_date"
@@ -154,7 +154,7 @@
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!-- 정기접종 2차 끝 -->
 
@@ -172,7 +172,7 @@
                         android:text="3차"
                         android:onClick="OnClickDataPicker3"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/vaccin3_date"
@@ -181,7 +181,7 @@
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!-- 정기접종 3차 끝 -->
 
@@ -199,7 +199,7 @@
                         android:text="4차"
                         android:onClick="OnClickDataPicker4"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/vaccin4_date"
@@ -208,7 +208,7 @@
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!-- 정기접종 4차 끝 -->
 
@@ -244,7 +244,7 @@
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -278,7 +278,7 @@
                         android:layout_marginLeft="5dp"
                         android:hint="날짜를 입력하세요"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -373,14 +373,14 @@
                         android:layout_marginLeft="20dp"
                         android:text="현재 몸무게  "
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/now"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint=" "
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:inputType="numberDecimal"/>
 
@@ -417,7 +417,7 @@
                         android:layout_marginLeft="20dp"
                         android:text="이전 몸무게"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/before"
@@ -426,7 +426,7 @@
                         android:layout_marginLeft="10dp"
                         android:hint="  "
                         android:textColor="@color/black"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         android:inputType="numberDecimal"/>
 
                     <TextView
@@ -486,11 +486,11 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="34dp"
                         android:layout_gravity="center"
                         android:text="구토"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <CheckBox
                         android:id="@+id/vomit"
@@ -521,7 +521,7 @@
                         android:layout_gravity="center"
                         android:text="설사"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <CheckBox
                         android:id="@+id/diar"
@@ -545,7 +545,7 @@
                         android:layout_gravity="center"
                         android:text="콧물"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <CheckBox
                         android:id="@+id/nasal"

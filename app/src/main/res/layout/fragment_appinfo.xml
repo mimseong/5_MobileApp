@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="앱정보"
+        android:textStyle="bold"
         android:textSize="70sp"
         android:textColor="@color/black"
         android:gravity="center"/>

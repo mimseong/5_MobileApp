@@ -31,6 +31,6 @@
         android:hint="숫자만 입력하세요"
         android:inputType="numberDecimal"
         android:textColor="@color/black"
-        android:textSize="18sp"/>
+        android:textSize="12sp"/>
 
 </LinearLayout>

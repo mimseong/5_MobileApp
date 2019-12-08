@@ -192,12 +192,13 @@ public class SignUpPhotoActivity extends AppCompatActivity implements View.OnCli
                 }
             };
 
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this, R.style.CustomDialogStyle)
                     .setTitle("업로드할 이미지 선택")
                     .setPositiveButton("사진촬영", cameraListener)
                     .setNeutralButton("앨범선택", albumListener)
                     .setNegativeButton("취소", cancelListener)
-                    .show();
+                    .show()
+                    .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
         else if(id_view == R.id.display_name) {
             final TextView name = (TextView) findViewById(id_view);

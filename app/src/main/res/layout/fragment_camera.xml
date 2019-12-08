@@ -63,6 +63,7 @@
                 android:background="@drawable/btn_stroke"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="사진 촬영"
+                android:textStyle="bold"
                 />
 
             <TextView
@@ -72,8 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="날짜 받아오기"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/picture_gps"
@@ -83,7 +83,6 @@
                 android:layout_marginTop="10dp"
                 android:text="GPS 위치 받아오기"
                 android:textColor="@color/black"
-                android:textSize="15sp"
 
                 />
 
@@ -96,7 +95,6 @@
                 android:layout_marginTop="10dp"
                 android:text="클릭하여 코멘트를 남기세요."
                 android:textColor="@color/black"
-                android:textSize="15sp"
 
                 />
 
