@@ -4,6 +4,8 @@ package com.dogpalja.mobileapplication5;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -144,8 +146,11 @@ public class CameraFragment extends Fragment {
                 OkToUpload = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                    float degree = getDegree();
+                    Bitmap resize_bitmap = rotateBitmap(resizeBitmap(bitmap), degree);
+
                     if(bitmap != null) {
-                        moment_selected_photo.setImageBitmap(bitmap);
+                        moment_selected_photo.setImageBitmap(resize_bitmap);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -157,6 +162,75 @@ public class CameraFragment extends Fragment {
         }
 
     }
+
+    //이미지 크기 변경하는 메소드
+    public Bitmap resizeBitmap(Bitmap source){
+
+        int targetWidth = source.getWidth();
+        int targetHight = targetWidth;
+
+        Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHight, false);
+
+        //원본 이미지 객체를 소멸시킨다
+        if(result != source)
+            source.recycle();
+
+        return result;
+    }
+
+    //각도 변경하는 메소드
+    public Bitmap rotateBitmap(Bitmap source, float degree){
+        try{
+            //원본 이미지의 가로, 세로 길이를 구한다.
+            int targetWidth = source.getWidth();
+            int targetHight = source.getHeight();
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(degree);
+            Bitmap resizeBitmap = Bitmap.createBitmap(source, 0, 0, targetWidth, targetHight, matrix, true);
+            source.recycle();
+
+            return resizeBitmap;
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    //각도 알아내는 메소드
+    public float getDegree(){
+        try{
+            //이미지 파일에 저장된 정보를 가져온다
+            ExifInterface exif = new ExifInterface(mImageUri.getPath());
+
+            int degree = 0;
+
+            //회전 각도 값, 없으면 -1
+            int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
+            switch (ori){
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+
+            return (float)degree;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
     private void capturePhoto(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
