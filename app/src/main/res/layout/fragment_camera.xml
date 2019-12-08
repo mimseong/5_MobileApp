@@ -36,7 +36,7 @@
 
         <!--Middle Layout-->
 
-        <com.dogpalja.mobileapplication5.Moment.SquareImageView
+        <com.dogpalja.mobileapplication5.SquareImageView
             android:id="@+id/moment_selected_photo"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
