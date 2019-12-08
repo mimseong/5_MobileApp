@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.models;
+package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
 

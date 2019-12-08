@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.Settings;
+package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,24 +13,22 @@ import android.view.ViewGroup;
 import com.dogpalja.mobileapplication5.R;
 
 
-public class CheerUpFragment extends Fragment {
+public class HealthFragment extends Fragment {
 
-    public CheerUpFragment() {
+    public HealthFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cheer_up, container, false);
+        return inflater.inflate(R.layout.fragment_health, container, false);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.Health;
+package com.dogpalja.mobileapplication5;
 
 import android.app.TabActivity;
 import android.content.Intent;

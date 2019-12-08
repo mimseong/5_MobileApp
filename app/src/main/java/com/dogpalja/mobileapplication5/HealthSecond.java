@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.Health;
+package com.dogpalja.mobileapplication5;
 
 import android.app.Activity;
 import android.app.AlertDialog;

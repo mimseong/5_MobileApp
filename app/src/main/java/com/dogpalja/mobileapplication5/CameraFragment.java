@@ -27,8 +27,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.dogpalja.mobileapplication5.Moment.MomentCommentInput;
-import com.dogpalja.mobileapplication5.Moment.MomentFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

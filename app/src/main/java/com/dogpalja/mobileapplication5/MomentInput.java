@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.Moment;
+package com.dogpalja.mobileapplication5;
 
 import androidx.appcompat.app.AppCompatActivity;
 

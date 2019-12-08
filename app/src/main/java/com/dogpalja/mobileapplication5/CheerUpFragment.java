@@ -1,5 +1,4 @@
-
-package com.dogpalja.mobileapplication5.Settings;
+package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,13 +13,12 @@ import android.view.ViewGroup;
 import com.dogpalja.mobileapplication5.R;
 
 
-public class ContactFragment extends Fragment {
+public class CheerUpFragment extends Fragment {
 
-    public ContactFragment() {
+    public CheerUpFragment() {
         // Required empty public constructor
     }
 
-    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +30,7 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false);
+        return inflater.inflate(R.layout.fragment_cheer_up, container, false);
     }
+
 }

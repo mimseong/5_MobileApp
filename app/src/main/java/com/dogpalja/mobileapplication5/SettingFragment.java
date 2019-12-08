@@ -1,4 +1,4 @@
-package com.dogpalja.mobileapplication5.Settings;
+package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
 import android.net.Uri;

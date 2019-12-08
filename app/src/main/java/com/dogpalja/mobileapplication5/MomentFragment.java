@@ -1,6 +1,7 @@
-package com.dogpalja.mobileapplication5.Health;
+package com.dogpalja.mobileapplication5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,22 +14,26 @@ import android.view.ViewGroup;
 import com.dogpalja.mobileapplication5.R;
 
 
-public class HealthFragment extends Fragment {
+public class MomentFragment extends Fragment {
 
-    public HealthFragment() {
+
+    public MomentFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Intent intent1 = new Intent(getActivity(), SignUpPhotoActivity.class);
+        //startActivity(intent1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_health, container, false);
+        return inflater.inflate(R.layout.fragment_moment, container, false);
     }
 
 }
