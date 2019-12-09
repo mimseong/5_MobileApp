@@ -1,15 +1,37 @@
 package com.dogpalja.mobileapplication5;
 
 public class User {
-    int id;
-    String email, username, image;
 
-    public User(int id, String email, String username) {
+    int id, posts;
+    String email,username,image;
+
+    public User(int id, String email, String username, String image) {
+        this.id = id;
         this.email = email;
         this.username = username;
+        this.image = image;
     }
 
-    public int getId() { return id; }
+    public User(int id,String email, String username,String image, int posts) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.image = image;
+        this.posts = posts;
+    }
+
+
+    public int getPosts() {
+        return posts;
+    }
+
+    public void setPosts(int posts) {
+        this.posts = posts;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;
@@ -23,7 +45,10 @@ public class User {
         return image;
     }
 
-    public void setId(int id) { this.id = id; }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setEmail(String email) {
         this.email = email;
