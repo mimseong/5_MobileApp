@@ -8,31 +8,31 @@ import com.android.volley.toolbox.Volley;
 
 public class VolleyHandler {
 
-    private RequestQueue mrequestQueue;
-    private static Context mcontext;
-    private static VolleyHandler mvolleyHandler;
+    private RequestQueue mRequestQueue;
+    private static Context mContext;
+    private static VolleyHandler mVolleyHandler;
 
-    private VolleyHandler(Context mcontext) {
-        this.mcontext = mcontext;
-        this.mrequestQueue = getRequestQueue();
+    private VolleyHandler(Context mContext) {
+        this.mContext = mContext;
+        this.mRequestQueue = getRequestQueue();
     }
 
     public static synchronized VolleyHandler getInstance(Context context){
-        if(mvolleyHandler == null){
-            mvolleyHandler = new VolleyHandler(context);
+        if(mVolleyHandler == null){
+            mVolleyHandler = new VolleyHandler(context);
         }
 
-        return mvolleyHandler;
+        return mVolleyHandler;
     }
 
 
     public RequestQueue getRequestQueue(){
 
-        if(mrequestQueue == null){
-            mrequestQueue = Volley.newRequestQueue(mcontext.getApplicationContext());
+        if(mRequestQueue == null){
+            mRequestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
 
         }
-        return mrequestQueue;
+        return mRequestQueue;
     }
 
     public <T> void addRequestToQueue(Request<T> req){
