@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void register(){
 
-        mProgressDialog.setTitle("Log In");
+        mProgressDialog.setTitle("회원가입 중..");
         mProgressDialog.setMessage("잠시 기다려주세요..");
         mProgressDialog.show();
 
