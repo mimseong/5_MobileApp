@@ -115,9 +115,9 @@ public class CameraFragment extends Fragment {
                 if(OkToUpload) {
                     mStoryTitle = moment_comment_tv.getText().toString();
 
-                    //imageToString = convertImageToString();
+                    imageToString = convertImageToString();
                     Toast.makeText(getContext(), mStoryTitle ,Toast.LENGTH_LONG).show();
-                    //uploadStory();
+                    uploadStory();
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
                 }
@@ -143,14 +143,17 @@ public class CameraFragment extends Fragment {
         if(requestCode == CAPTURE_IMAGE){
             if(resultCode == RESULT_OK){
                 picture_day.setText(dateOfImage().substring(0, 16));
-                OkToUpload = true;
+
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                    Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
                     float degree = getDegree();
-                    Bitmap resize_bitmap = rotateBitmap(resizeBitmap(bitmap), degree);
+                    bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
+
+
 
                     if(bitmap != null) {
-                        moment_selected_photo.setImageBitmap(resize_bitmap);
+                        OkToUpload = true;
+                        moment_selected_photo.setImageBitmap(bitmap);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
