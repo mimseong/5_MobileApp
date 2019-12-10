@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Default fragment to be display
         //changeFragmentDisplay(R.id.moment);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_content, new SignUpPhotoFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_content, new MomentFragment()).commit();
 
 
         //listener for navigation view
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ///in bottom navigation view
                     if(item.getItemId() == R.id.moment){
-                        fragment = new SignUpPhotoFragment();
+                        fragment = new MomentFragment();
 
                     }
                     else if(item.getItemId() == R.id.camera){
