@@ -39,6 +39,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
@@ -124,7 +125,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-            
+                startActivity(new Intent(MapFragment.this.getActivity() , Map_infocli.class));
                 Log.i("clis", "정 보창 클릭");
             }
         });

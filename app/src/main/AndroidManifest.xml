@@ -26,12 +26,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBL9z32GJIdtI0PCdliret3_BbcFH6MLYc" />
-
+        <activity android:name=".Map_infocli" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".DisplayImgActivity"></activity>
         <activity android:name=".SignUpPhotoActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
