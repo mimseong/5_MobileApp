@@ -74,7 +74,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/shot" />
+                    android:src="@drawable/vaccine" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -297,7 +297,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/nametag" />
+                    android:src="@drawable/tag" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -455,7 +455,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/contact_us" />
+                    android:src="@drawable/ask" />
 
                 <TextView
                     android:layout_width="wrap_content"
