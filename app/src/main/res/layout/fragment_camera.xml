@@ -27,7 +27,6 @@
                 android:layout_height="50dp"
                 android:id="@+id/moment_ok_btn"
                 android:text="완료"
-                android:textSize="15sp"
                 android:background="#00ff0000"
                 style="?android:attr/borderlessButtonStyle"
                 />
@@ -62,32 +61,62 @@
             android:padding="20dp"
             >
 
-            <Button
-                android:id="@+id/btn_capture_img"
+            <RelativeLayout
+                android:id="@+id/layout_btn_capture_img"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:layout_marginRight="7dp"
-                android:background="@drawable/btn_stroke"
-                style="?android:attr/borderlessButtonStyle"
-                android:text="사진 촬영"
-                android:textStyle="bold"
-                />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_capture_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="7dp"
+                    android:text="사진 촬영"
+                    android:textSize="15sp"
+                    android:gravity="left|center_vertical"
+                    android:textStyle="bold"
+                    android:background="@drawable/round_button_1"
+                    />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_alignRight="@+id/btn_capture_img"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/upload"
+                    />
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/picture_day"
-                android:layout_below="@+id/btn_capture_img"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/layout_btn_capture_img"
+                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" "
+                android:text="날짜 받아오기"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/picture_place"
+                android:layout_below="@+id/picture_day"
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장소 받아오기"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/moment_comment_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/picture_day"
+                android:layout_marginTop="3dp"
+                android:layout_below="@+id/picture_place"
                 android:text="클릭하여 코멘트를 남기세요."
                 android:textColor="@color/black"
 
