@@ -105,7 +105,6 @@
             <TextView
                 android:id="@+id/picture_place"
                 android:layout_below="@+id/picture_day"
-                android:layout_marginTop="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="장소 받아오기"
@@ -115,7 +114,6 @@
                 android:id="@+id/moment_comment_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_below="@+id/picture_place"
                 android:text="클릭하여 코멘트를 남기세요."
                 android:textColor="@color/black"

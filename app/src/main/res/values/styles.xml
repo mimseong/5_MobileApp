@@ -13,6 +13,8 @@
         <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
         <item name="android:checkboxStyle">@style/CheckboxStyle</item>
         <item name="android:alertDialogTheme">@style/CustomDialogStyle</item>
+
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- custom dialog style -->
