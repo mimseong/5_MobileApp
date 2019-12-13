@@ -1,5 +1,6 @@
 package com.dogpalja.mobileapplication5;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -106,10 +107,12 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     public void doTakePhotoAction() // 카메라 촬영 후 이미지 가져오기
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         // 임시로 사용할 파일의 경로를 생성
         String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
+        mImageCaptureUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", new File(Environment.getExternalStorageDirectory(), url));
+        //mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
 
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
         startActivityForResult(intent, PICK_FROM_CAMERA);
