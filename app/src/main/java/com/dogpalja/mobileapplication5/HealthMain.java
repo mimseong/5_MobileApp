@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressWarnings("deprecation")
-
 public class HealthMain extends Activity {
 
     TextView vomit_s, tagNum, eV1date, eV2date, eV3date, eV4date, eHdate, eRdate,  eBefore;
@@ -126,11 +124,6 @@ public class HealthMain extends Activity {
             }
         });
 
-        bInsert_w.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                return false;
-            }
-        });
     }
 
     //인식표 체크박스 클릭 시 액션
