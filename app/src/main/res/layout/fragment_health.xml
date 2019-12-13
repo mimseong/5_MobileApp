@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relLayout2">
-        <include layout="@layout/health_check"/>
+
+        <include layout="@layout/health_check" />
     </RelativeLayout>
 
 </FrameLayout>
