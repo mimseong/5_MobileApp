@@ -6,5 +6,7 @@
     <external-path
         path="."
         name="external_storage_root" />
-
+    <external-path
+        name="my_images"
+        path="Android/data/com.dogpalja.mobileapplication5/files/Pictures"/>
 </paths>
