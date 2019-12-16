@@ -4,11 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import android.Manifest;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -102,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
         else if(item.getItemId() == R.id.settings){
             fragment = new SettingFragment();
         }
+        else if(item.getItemId() == R.id.logout){
+            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
+            SharedPrefrenceManager sharedPrefrenceManager = SharedPrefrenceManager.getInstance(getApplicationContext());
+            sharedPrefrenceManager.logUserOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
         else {
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
         }
@@ -176,4 +189,17 @@ public class MainActivity extends AppCompatActivity {
 
     //camera 3rd try
 
+
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        boolean isUserLoggedIn = SharedPrefrenceManager.getInstance(getApplicationContext()).isUserLoggeddIn();
+//        if(!isUserLoggedIn){    //사용자가 로그인 상태가 아니라면 로그인 창으로 이동
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        } else{
+//            //do nothing just stay here
+//        }
+//    }
 }
