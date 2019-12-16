@@ -99,7 +99,6 @@ public class CameraFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getProfileImage();
 
         final TextView moment_comment_tv = (TextView) getView().findViewById(R.id.moment_comment_txt);
         btn_capture_img.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +223,6 @@ public class CameraFragment extends Fragment {
                     degree = 270;
                     break;
             }
-
             return (float)degree;
 
         }catch (Exception e){
@@ -243,51 +241,6 @@ public class CameraFragment extends Fragment {
         //mImageUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", file);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageUri);
         startActivityForResult(cameraIntent, CAPTURE_IMAGE);
-    }
-
-    private void getProfileImage(){
-        User user = SharedPrefrenceManager.getInstance(getContext()).getUserData();
-        int user_id = user.getId();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.get_user_data+user_id,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            if(!jsonObject.getBoolean("error")){
-
-                                JSONObject jsonObjectUser =  jsonObject.getJSONObject("user");
-
-                                mProfileImage =  jsonObjectUser.getString("image");
-
-
-
-                            }else{
-
-                                Toast.makeText(getContext(),jsonObject.getString("message"),Toast.LENGTH_LONG).show();
-                            }
-
-
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-
-                    }
-                }
-
-
-        );
-
-        VolleyHandler.getInstance(getContext().getApplicationContext()).addRequestToQueue(stringRequest);
     }
 
 
@@ -312,73 +265,23 @@ public class CameraFragment extends Fragment {
         final String dateOfImage = dateOfImage();
         final String currentTime = currentReadableTime();
 
-        User user = SharedPrefrenceManager.getInstance(getContext()).getUserData();
-        final String username = user.getUsername();
-        final int user_id = user.getId();
-        final String profile_image = mProfileImage;
-
 
         final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
         mProgressDialog.setTitle("Uploading");
         mProgressDialog.setMessage("잠시 기다려주세요..");
         mProgressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.upload_story_image,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        Map <String, String> imageMap = new HashMap<>();
+        imageMap.put("image_name", dateOfImage);
+        imageMap.put("image_encoded", imageToString);
+        imageMap.put("title", mStoryTitle);
+        imageMap.put("time", currentTime);
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
 
-                            if(!jsonObject.getBoolean("error")){
-                                mProgressDialog.dismiss();
+//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.main_fragment_content, new MomentFragment());
+//        ft.commit();
 
-                                JSONObject jsonObjectUser = jsonObject.getJSONObject(("image"));
-
-                                Toast.makeText(getContext(), jsonObject.getString("업로드가 완료되었습니다."), Toast.LENGTH_LONG).show();
-
-                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                                ft.replace(R.id.main_fragment_content, new MomentFragment());
-                                ft.commit();
-
-                            } else {
-                                Toast.makeText(getContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                            }
-
-                        } catch(JSONException e){
-                            e.printStackTrace();
-
-                        }
-
-                    }
-                },
-                //에러났을 떄
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        mProgressDialog.dismiss();
-                    }
-                }
-        ){
-            @Override
-            protected java.util.Map<String, String> getParams() throws AuthFailureError {
-                Map <String, String> imageMap = new HashMap<>();
-                imageMap.put("image_name", dateOfImage);
-                imageMap.put("image_encoded", imageToString);
-                imageMap.put("title", mStoryTitle);
-
-                imageMap.put("time", currentTime);
-                imageMap.put("username", username);
-                imageMap.put("user_id", String.valueOf(user_id));
-                imageMap.put("profile_image", profile_image);
-
-                return imageMap;
-            }
-        };  //end of string Request
-
-        VolleyHandler.getInstance(getContext().getApplicationContext()).addRequestToQueue(stringRequest);
         OkToUpload = false;
     }
 
