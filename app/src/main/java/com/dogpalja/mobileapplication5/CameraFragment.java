@@ -12,7 +12,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,15 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +30,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dogpalja.mobileapplication5.SquareImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,7 +42,7 @@ public class CameraFragment extends Fragment {
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
-    String mStoryTitle, imageToString, mProfileImage;
+    String mStoryTitle, imageToString;
     boolean OkToUpload;
     TextView moment_comment_btn, picture_day;
     final int CAPTURE_IMAGE = 1;
@@ -116,6 +104,7 @@ public class CameraFragment extends Fragment {
 
                     imageToString = convertImageToString();
                     Toast.makeText(getContext(), mStoryTitle ,Toast.LENGTH_LONG).show();
+
                     uploadStory();
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();

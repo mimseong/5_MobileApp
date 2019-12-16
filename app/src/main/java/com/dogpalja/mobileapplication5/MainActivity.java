@@ -109,12 +109,6 @@ public class MainActivity extends AppCompatActivity {
         else if(item.getItemId() == R.id.settings){
             fragment = new SettingFragment();
         }
-        else if(item.getItemId() == R.id.logout){
-            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_LONG).show();
-            SharedPrefrenceManager sharedPrefrenceManager = SharedPrefrenceManager.getInstance(getApplicationContext());
-            sharedPrefrenceManager.logUserOut();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
         else {
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
         }
