@@ -4,6 +4,7 @@ package com.dogpalja.mobileapplication5;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -25,8 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +40,13 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class CameraFragment extends Fragment {
-
-    //SquareImageView moment_selected_photo;
     ImageView moment_selected_photo;
 
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
-    String mStoryTitle, imageToString;
+    String mStoryTitle, imageToString, currentImagePath = null;
+    String imageName;
     boolean OkToUpload;
     TextView moment_comment_btn, picture_day;
     final int CAPTURE_IMAGE = 1;
@@ -67,7 +71,6 @@ public class CameraFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        //moment_selected_photo = (SquareImageView) view.findViewById(R.id.moment_selected_photo);
         moment_selected_photo = (ImageView) view.findViewById(R.id.moment_selected_photo);
 
         moment_ok_btn = (Button) view.findViewById(R.id.moment_ok_btn);
@@ -103,9 +106,10 @@ public class CameraFragment extends Fragment {
                     mStoryTitle = moment_comment_tv.getText().toString();
 
                     imageToString = convertImageToString();
+                    uploadStory();
                     Toast.makeText(getContext(), mStoryTitle ,Toast.LENGTH_LONG).show();
 
-                    uploadStory();
+
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
                 }
@@ -124,35 +128,7 @@ public class CameraFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == CAPTURE_IMAGE){
-            if(resultCode == RESULT_OK){
-                picture_day.setText(dateOfImage().substring(0, 16));
-
-                try {
-                    Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
-                    float degree = getDegree();
-                    bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
-
-
-
-                    if(bitmap != null) {
-                        OkToUpload = true;
-                        moment_selected_photo.setImageBitmap(bitmap);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
-
-
-            }
-        }
-
-    }
 
     //이미지 크기 변경하는 메소드
     public Bitmap resizeBitmap(Bitmap source){
@@ -224,15 +200,50 @@ public class CameraFragment extends Fragment {
 
     private void capturePhoto(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String imageName = "image.jpg";
-        mImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),imageName));
-        //File file = new File(Environment.getExternalStorageDirectory(),imageName);
-        //mImageUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", file);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageUri);
-        startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+
+        // 새로 추가
+        if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            File imageFile = null;
+            imageFile = getImageFile();
+
+            if (imageFile != null){
+                mImageUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageUri);
+            }
+
+            startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+
+        }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK){
+
+                picture_day.setText(dateOfImage().substring(0, 16));
+
+                try {
+                    Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                    float degree = getDegree();
+                    Toast.makeText(getContext(),Float.toString(degree),Toast.LENGTH_LONG).show();
+                    bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
+                    //bitmap = resizeBitmap(bitmap_tmp);
+
+                    if(bitmap != null) {
+                        OkToUpload = true;
+                        moment_selected_photo.setImageBitmap(bitmap);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
+
+
+        }
+
+    }
 
     private String convertImageToString(){
 
@@ -244,6 +255,22 @@ public class CameraFragment extends Fragment {
         return result;
     }
 
+    private File getImageFile(){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageName = "jpg_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imageFile = null;
+        try {
+            imageFile = File.createTempFile(imageName, ".jpg", storageDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentImagePath = imageFile.getAbsolutePath();
+
+        return imageFile;
+    }
+
     private void uploadStory(){
 
         if(!OkToUpload){
@@ -251,7 +278,7 @@ public class CameraFragment extends Fragment {
             return;
         }
 
-        final String dateOfImage = dateOfImage();
+        //final String dateOfImage = dateOfImage();
         final String currentTime = currentReadableTime();
 
 
@@ -261,11 +288,23 @@ public class CameraFragment extends Fragment {
         mProgressDialog.show();
 
         Map <String, String> imageMap = new HashMap<>();
-        imageMap.put("image_name", dateOfImage);
+        //imageMap.put("image_name", dateOfImage);
+        imageMap.put("image_name", imageName);
         imageMap.put("image_encoded", imageToString);
         imageMap.put("title", mStoryTitle);
         imageMap.put("time", currentTime);
 
+        // Convert Map to byte array
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            out.writeObject(imageMap);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mProgressDialog.dismiss();
 
 //        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.main_fragment_content, new MomentFragment());
@@ -274,6 +313,7 @@ public class CameraFragment extends Fragment {
         OkToUpload = false;
     }
 
+    //사진 미리보기에서 시간 표시
     private String dateOfImage(){
         //기기에서 시간 받아옴
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
