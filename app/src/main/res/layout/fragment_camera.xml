@@ -87,7 +87,7 @@
                     android:layout_marginRight="25dp"
                     android:layout_alignRight="@+id/btn_capture_img"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/upload"
+                    android:src="@drawable/upload_hdpi"
                     />
 
             </RelativeLayout>
