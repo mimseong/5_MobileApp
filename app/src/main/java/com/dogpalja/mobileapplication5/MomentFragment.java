@@ -204,7 +204,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             {
                 // 이후의 처리가 카메라와 같으므로 일단  break없이 진행
                 mImageCaptureUri = data.getData();
-                Log.d("SmartWheel",mImageCaptureUri.getPath().toString());
+                Log.d("Profile",mImageCaptureUri.getPath().toString());
             }
 
             case PICK_FROM_CAMERA:
@@ -258,7 +258,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
                 // CROP된 이미지를 저장하기 위한 FILE 경로
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
-                        "/SmartWheel/"+System.currentTimeMillis()+".jpg";
+                        "/Profile/"+System.currentTimeMillis()+".jpg";
 
                 if(extras != null)
                 {
@@ -345,12 +345,12 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
      * Bitmap을 저장하는 부분
      */
     private void storeCropImage(Bitmap bitmap, String filePath) {
-        // SmartWheel 폴더를 생성하여 이미지를 저장하는 방식이다.
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/SmartWheel";
-        File directory_SmartWheel = new File(dirPath);
+        // Profile 폴더를 생성하여 이미지를 저장하는 방식이다.
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Profile";
+        File directory_Profile = new File(dirPath);
 
-        if(!directory_SmartWheel.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
-            directory_SmartWheel.mkdir();
+        if(!directory_Profile.exists()) // Profile 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
+            directory_Profile.mkdir();
 
         File copyFile = new File(filePath);
         BufferedOutputStream out = null;
