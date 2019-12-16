@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,6 +63,10 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private TextView tv_sub_name;
     private int id_view;
     private String absoultePath;
+    GridView gridview;
+
+    //성민 추가 변수
+    String imageName, currentImagePath = null;
 
     //private Context context;
 
@@ -79,6 +87,8 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
         tv_sub_name = (TextView) view.findViewById(R.id.description);
         tv_sub_name.setOnClickListener(this);
+
+        gridview = (GridView) view.findViewById(R.id.images_grid_layout);
 
         return view;
     }
@@ -106,6 +116,51 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     }
 
+
+    /////성민 추가 부분
+
+    //사진 촬영 함수
+    private void capturePhoto(){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+
+        if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            File imageFile = null;
+            imageFile = getImageFile();
+
+            if (imageFile != null){
+                mImageCaptureUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageCaptureUri);
+            }
+
+            startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
+
+        }
+    }
+
+    //파일 경로와 사진파일 이름 설정
+    private File getImageFile(){
+        //사진 찍은 시간 가져옴
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageName = timeStamp + "_";
+        //파일 경로 지정
+        File storageDir = getContext().getExternalFilesDir("ProfileImage");
+
+        File imageFile = null;
+        try {
+            //사진 이름 지정
+            imageFile = File.createTempFile(imageName, ".jpg", storageDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentImagePath = imageFile.getAbsolutePath();
+
+        return imageFile;
+    }
+
+
+
+    /////성민 추가 부분 끝
 
 
     /**
@@ -154,6 +209,27 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
             case PICK_FROM_CAMERA:
             {
+                /// 성민 추가 부분
+                if(resultCode == RESULT_OK){
+
+                    try {
+                        //경로에서 사진 들고옴
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), mImageCaptureUri);
+
+                        if(bitmap != null) {
+                            //들고온 사진 Image View로 보여줌
+                            //moment_selected_photo.setImageBitmap(bitmap);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
+
+
+                }
+                //// 성민 추가 끝
+
+
                 // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
                 // 이후에 이미지 크롭 어플리케이션을 호출.
                 Intent intent = new Intent("com.android.camera.action.CROP");

@@ -198,10 +198,11 @@ public class CameraFragment extends Fragment {
     }
 
 
+    //사진 촬영 함수
     private void capturePhoto(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // 새로 추가
+
         if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
             File imageFile = null;
             imageFile = getImageFile();
@@ -245,20 +246,10 @@ public class CameraFragment extends Fragment {
 
     }
 
-    private String convertImageToString(){
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);   //100 : 원본
-        byte[] imageByteArray = baos.toByteArray();
-        String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
-
-        return result;
-    }
-
     private File getImageFile(){
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        imageName = "jpg_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        imageName = timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir("Images");
 
         File imageFile = null;
         try {
@@ -270,6 +261,18 @@ public class CameraFragment extends Fragment {
 
         return imageFile;
     }
+
+    private String convertImageToString(){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);   //100 : 원본
+        byte[] imageByteArray = baos.toByteArray();
+        String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+
+        return result;
+    }
+
+
 
     private void uploadStory(){
 
