@@ -10,6 +10,6 @@
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/captured_img" />
+        android:background="#f5f5f5"/>
 
 </RelativeLayout>

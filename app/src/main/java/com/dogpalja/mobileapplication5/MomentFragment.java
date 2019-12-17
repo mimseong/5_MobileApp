@@ -118,6 +118,8 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                Toast.makeText(getContext(), "클릭됨",Toast.LENGTH_LONG).show();
+
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
                 intent.putExtra("image_tags", storyTitleV.elementAt(i));
                 intent.putExtra("story_image", imageNameV.elementAt(i));
@@ -179,10 +181,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     }
 
     public void MakeList() throws IOException, ClassNotFoundException {
-        //테스트용 나중에 지울 예정
-        Toast.makeText(getContext(), storageDir.getAbsolutePath(),Toast.LENGTH_LONG).show();
-
-
 
         for(int j = 0; j < files.length; j++) {
 
