@@ -75,7 +75,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     //private DB_Manger dbmanger;
 
-    int[] images = {R.drawable.dog, R.drawable.default_image};
+    int[] images = {R.drawable.dog, R.drawable.default_image, R.drawable.default_image, R.drawable.default_image};
 
 
     @Override
@@ -125,7 +125,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
-                intent.putExtra("image_tags", "테스트");
+                intent.putExtra("image_tags", "테스트문구 - MomentFragment.java");
                 intent.putExtra("story_image", images[i]);
                 startActivity(intent);
             }
@@ -154,9 +154,11 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         public View getView(int i, View convertView, ViewGroup parent) {
             View view = getLayoutInflater().inflate(R.layout.row_data, null);
 
-            ImageView image = view.findViewById(R.id.images);
+            ImageView imageView = view.findViewById(R.id.images);
+            imageView.setPadding(1,1,1,1);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            image.setImageResource(images[i]);
+            imageView.setImageResource(images[i]);
             return view;
         }
     }

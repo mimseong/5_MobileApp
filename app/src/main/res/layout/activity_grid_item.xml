@@ -17,48 +17,6 @@
             android:layout_alignParentTop="true"
             android:background="@color/white">
 
-            <!-- Upper Relative Layout-->
-            <RelativeLayout
-                android:id="@+id/upper_part_layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_photo"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-
-                    />
-
-
-                <TextView
-                    android:id="@+id/username_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/profile_photo"
-                    android:text="name"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-
-                    />
-
-                <ImageView
-                    android:id="@+id/threedots_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/ic_home_menu" />
-
-
-            </RelativeLayout>
-
 
             <!--Middle Layout-->
 
@@ -91,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="#tags title"
+                    android:text="테스트문구 - activity_grid_item.xml"
                     android:textColor="@color/black"
                     android:textSize="15sp"/>
 
@@ -101,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_tags"
                     android:layout_marginTop="10dp"
-                    android:text="20 days ago"
+                    android:text="테스트날짜 - activity_grid_item.xml"
                     android:textColor="@color/black"
                     android:textSize="15sp"
 
