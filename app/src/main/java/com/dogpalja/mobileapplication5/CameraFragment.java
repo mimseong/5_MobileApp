@@ -313,7 +313,7 @@ public class CameraFragment extends Fragment {
     private String convertImageToString(){
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG,50,baos);
         byte[] imageByteArray = baos.toByteArray();
         String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
 

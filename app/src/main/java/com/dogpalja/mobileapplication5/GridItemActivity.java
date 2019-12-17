@@ -32,8 +32,11 @@ public class GridItemActivity extends AppCompatActivity {
         image_time.setText(intent.getStringExtra("image_time"));
 
         String stringImage = intent.getStringExtra("story_image");
-        String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
 
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
+
+        String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
         InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 

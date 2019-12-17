@@ -162,15 +162,17 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             ImageView imageView = view.findViewById(R.id.images);
             imageView.setPadding(1,1,1,1);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageResource(images[i]);
+            //imageView.setImageResource(images[i]);
 
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
 
-//            String stringImage = imageNameV.elementAt(i);
-//            String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
-//            InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
-//            Bitmap bitmap = BitmapFactory.decodeStream(stream);
-//
-//            imageView.setImageBitmap(bitmap);
+            String stringImage = imageNameV.elementAt(i);
+            String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
+            InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
+            Bitmap bitmap = BitmapFactory.decodeStream(stream, null, options);
+
+            imageView.setImageBitmap(bitmap);
 
             return view;
         }
