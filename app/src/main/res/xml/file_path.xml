@@ -13,6 +13,6 @@
         name="Profile"
         path="Android/data/com.dogpalja.mobileapplication5/files/Profile"/>
     <external-path
-        name="Hashmap"
-        path="Android/data/com.dogpalja.mobileapplication5/files/Hashmap"/>
+        name="PictureDate"
+        path="Android/data/com.dogpalja.mobileapplication5/files/PictureDate"/>
 </paths>

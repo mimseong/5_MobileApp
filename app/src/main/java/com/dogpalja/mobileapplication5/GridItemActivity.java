@@ -3,8 +3,14 @@ package com.dogpalja.mobileapplication5;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.TextView;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 public class GridItemActivity extends AppCompatActivity {
 
@@ -23,7 +29,15 @@ public class GridItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         image_tags.setText(intent.getStringExtra("image_tags"));
-        story_image.setImageResource(intent.getIntExtra("story_image", 0));
         image_time.setText(intent.getStringExtra("image_time"));
+
+        String stringImage = intent.getStringExtra("story_image");
+        String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
+
+        InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
+        Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+        story_image.setImageBitmap(bitmap);
+
     }
 }

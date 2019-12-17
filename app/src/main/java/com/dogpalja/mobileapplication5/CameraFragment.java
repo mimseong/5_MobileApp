@@ -4,7 +4,6 @@ package com.dogpalja.mobileapplication5;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -14,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +45,7 @@ public class CameraFragment extends Fragment {
     Button moment_ok_btn, btn_capture_img;
 
     Bitmap bitmap;
-    String mStoryTitle, imageToString, currentImagePath = null;
+    String mStoryTitle;
     String imageName;
     boolean OkToUpload;
     TextView moment_comment_btn, picture_day;
@@ -53,6 +53,7 @@ public class CameraFragment extends Fragment {
 
     String timeStamp, picture_time;
     Uri mImageUri;
+
 
 
     public CameraFragment() {
@@ -105,7 +106,6 @@ public class CameraFragment extends Fragment {
                 if(OkToUpload) {
                     mStoryTitle = moment_comment_tv.getText().toString();
 
-                    imageToString = convertImageToString();
                     uploadStory();
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
@@ -227,7 +227,6 @@ public class CameraFragment extends Fragment {
                     float degree = getDegree();
                     Toast.makeText(getContext(),Float.toString(degree),Toast.LENGTH_LONG).show();
                     bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
-                    //bitmap = resizeBitmap(bitmap_tmp);
 
                     if(bitmap != null) {
                         OkToUpload = true;
@@ -248,69 +247,79 @@ public class CameraFragment extends Fragment {
         imageName = timeStamp + "_";
         File storageDir = getContext().getExternalFilesDir("Images");
 
-        File imageFile = null;
-        try {
-            imageFile = File.createTempFile(imageName, ".jpg", storageDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        currentImagePath = imageFile.getAbsolutePath();
+        File imageFile = new File(storageDir, imageName + ".jpg");
 
         return imageFile;
     }
 
-    private String convertImageToString(){
+    private File getTxtFile(){
+        File storageDir = getContext().getExternalFilesDir("PictureDate");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);   //100 : 원본
-        byte[] imageByteArray = baos.toByteArray();
-        String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+        File txtFile = new File(storageDir, imageName + ".ser");
 
-        return result;
+        return txtFile;
     }
 
-
-
     private void uploadStory(){
-
         if(!OkToUpload){
             Toast.makeText(getContext(),"업로드 할 이미지가 없습니다",Toast.LENGTH_LONG).show();
             return;
         }
 
-        //final String dateOfImage = dateOfImage();
-        final String currentTime = currentReadableTime();
+        String imageToString = convertImageToString();
+        Map<String, String> imageMap = new HashMap<>();
+
+        imageMap.put("image_name", imageToString);
+        imageMap.put("title", mStoryTitle);
+        imageMap.put("time", picture_time);
+
+        writeSettings(imageMap);
 
 
-        final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-        mProgressDialog.setTitle("Uploading");
-        mProgressDialog.setMessage("잠시 기다려주세요..");
-        mProgressDialog.show();
-
-
-//        Map <String, String> imageMap = new HashMap<>();
-//        imageMap.put("image_name", imageName);
-//        imageMap.put("image_encoded", imageToString);
-//        imageMap.put("title", mStoryTitle);
-//        imageMap.put("time", currentTime);
-//
-//        // Convert Map to byte array
-//        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-//        try {
-//            ObjectOutputStream out = new ObjectOutputStream(byteOut);
-//            out.writeObject(imageMap);
-//            out.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        mProgressDialog.dismiss();
-
-//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.main_fragment_content, new MomentFragment());
-//        ft.commit();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_fragment_content, new MomentFragment());
+        ft.commit();
 
         OkToUpload = false;
+    }
+
+    public void writeSettings(Map<String, String> imageMap) {
+        File fileName = getTxtFile();
+
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        try {
+            fos = new FileOutputStream(fileName);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(imageMap);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }  catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null)
+                    fos.flush();
+                fos.close();
+                if (out != null)
+                    out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String convertImageToString(){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] imageByteArray = baos.toByteArray();
+        String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+
+        return result;
+
+
     }
 
     //사진 미리보기에서 시간 표시
@@ -320,10 +329,4 @@ public class CameraFragment extends Fragment {
         return timestamp.toString();
     }
 
-    private String currentReadableTime(){
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        //사람이 읽기 쉬운 형태로 반환
-        Date date = new Date(timestamp.getTime());
-        return date.toString();
-    }
 }

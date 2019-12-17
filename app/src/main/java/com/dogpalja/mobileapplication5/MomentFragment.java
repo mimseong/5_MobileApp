@@ -6,21 +6,19 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,19 +29,26 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,41 +70,24 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private TextView tv_name;
     private TextView tv_sub_name;
     private int id_view;
-    private String absoultePath;
+    String absoultePath;
     GridView gridview;
 
+
     //성민 추가 변수
-    String imageName, currentImagePath = null;
+    String imageName;
+    File[] files;
+    int[] images = {R.drawable.dog, R.drawable.default_image};
+    Vector<String> imageNameV;
+    Vector<String> storyTitleV;
+    Vector<String> picture_timeV;
 
-    //private Context context;
-
-    //private DB_Manger dbmanger;
-
-    int[] images = {R.drawable.dog, R.drawable.default_image, R.drawable.default_image, R.drawable.default_image};
-
+    File storageDir;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.profile_content);
-
-        //dbmanger = new DB_Manger();
-
-
-        /*iv_UserPhoto = (ImageView) getView().findViewById(R.id.profile_image);
-        iv_UserPhoto.setOnClickListener(this);
-
-        tv_name = (TextView) getView().findViewById(R.id.display_name);
-        tv_name.setOnClickListener(this);
-
-        tv_sub_name = (TextView) getView().findViewById(R.id.description);
-        tv_sub_name.setOnClickListener(this);*/
-
-        //ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
-
-
 
     }
 
@@ -118,24 +106,35 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         tv_sub_name = (TextView) view.findViewById(R.id.description);
         tv_sub_name.setOnClickListener(this);
 
+        storageDir = getContext().getExternalFilesDir("PictureDate");
+        files = storageDir.listFiles();
         gridview = (GridView) view.findViewById(R.id.images_grid_layout);
-
         CustomAdaptor customAdaptor = new CustomAdaptor();
+        imageNameV = new Vector<String>(files.length);
+        picture_timeV = new Vector<String>(files.length);
+        storyTitleV = new Vector<String>(files.length);
         gridview.setAdapter(customAdaptor);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
-                intent.putExtra("image_tags", "테스트문구 - MomentFragment.java");
-                intent.putExtra("story_image", images[i]);
-                intent.putExtra("image_time", "시간 - MomentFragment.java");
+                intent.putExtra("image_tags", storyTitleV.elementAt(i));
+                intent.putExtra("story_image", imageNameV.elementAt(i));
+                intent.putExtra("image_time", picture_timeV.elementAt(i));
                 startActivity(intent);
             }
         });
 
 
 
+        try {
+            MakeList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -143,7 +142,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private class CustomAdaptor extends BaseAdapter {
         @Override
         public int getCount() {
-            return images.length;
+            return imageNameV.size();
         }
 
         @Override
@@ -163,10 +162,169 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             ImageView imageView = view.findViewById(R.id.images);
             imageView.setPadding(1,1,1,1);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
             imageView.setImageResource(images[i]);
+
+
+//            String stringImage = imageNameV.elementAt(i);
+//            String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
+//            InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
+//            Bitmap bitmap = BitmapFactory.decodeStream(stream);
+//
+//            imageView.setImageBitmap(bitmap);
+
             return view;
         }
+    }
+
+    public void MakeList() throws IOException, ClassNotFoundException {
+        //테스트용 나중에 지울 예정
+        Toast.makeText(getContext(), storageDir.getAbsolutePath(),Toast.LENGTH_LONG).show();
+
+
+
+        for(int j = 0; j < files.length; j++) {
+
+
+            FileInputStream fileStream = null;
+            fileStream = new FileInputStream(storageDir.getAbsolutePath() + "/" + files[j].getName());
+
+            ObjectInputStream objectInputStream = null;
+            objectInputStream = new ObjectInputStream(fileStream);
+
+
+            Object object = null;
+            object = objectInputStream.readObject();
+
+            objectInputStream.close();
+
+            HashMap hashMap = (HashMap) object;
+
+            Iterator<String> it = hashMap.keySet().iterator();
+
+            while (it.hasNext()) {  // 맵키가 존재할경우
+
+                String key = it.next();  // 맵키를 꺼냄
+                String value = (String) hashMap.get(key);  // 키에 해당되는 객체 꺼냄
+
+                if(key.equals("image_name")){
+                    imageNameV.addElement(value);
+                } else if (key.equals("title")) {
+                    picture_timeV.addElement(value);
+                } else if(key.equals("time")){
+                    storyTitleV.addElement(value);
+                }
+
+            }
+
+        }
+
+        Toast.makeText(getContext(), Integer.toString(picture_timeV.size()),Toast.LENGTH_LONG).show();
+    }
+//
+//    public void readSetttings() {
+//        files = storageDir.listFiles();
+//        imageNameV = new Vector<String>(files.length);
+//        picture_timeV = new Vector<String>(files.length);
+//        storyTitleV = new Vector<String>(files.length);
+//
+//        File cacheDir = null;
+//        File appDirectory = null;
+//        if (android.os.Environment.getExternalStorageState().
+//                equals(android.os.Environment.MEDIA_MOUNTED)) {
+//            cacheDir = getApplicationContext().getExternalCacheDir();
+//            appDirectory = new File(cacheDir + subFolder);
+//        } else {
+//            cacheDir = getApplicationContext().getCacheDir();
+//            String BaseFolder = cacheDir.getAbsolutePath();
+//            appDirectory = new File(BaseFolder + subFolder);
+//        }
+//
+//        if (appDirectory != null && !appDirectory.exists()) return; // File does not exist
+//
+//        File fileName = new File(appDirectory, file);
+//
+//        FileInputStream fis = null;
+//        ObjectInputStream in = null;
+//        try {
+//            fis = new FileInputStream(fileName);
+//            in = new ObjectInputStream(fis);
+//            Map<String, String> myHashMap = (Map<String, String>) in.readObject();
+//            userSettings = myHashMap;
+//            System.out.println("count of hash map::"+userSettings.size() + " " + userSettings);
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (StreamCorruptedException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }finally {
+//
+//            try {
+//                if(fis != null) {
+//                    fis.close();
+//                }
+//                if(in != null) {
+//                    in.close();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    @Override
+    public void onClick(View v) {
+
+
+        id_view = v.getId();
+        if(id_view == R.id.profile_image) {
+            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
+                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                    }
+                    doTakePhotoAction();
+                }
+            };
+            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    doTakeAlbumAction();
+                }
+            };
+
+            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            };
+
+            new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle)
+                    .setTitle("업로드할 이미지 선택")
+                    .setPositiveButton("사진촬영", cameraListener)
+                    .setNeutralButton("앨범선택", albumListener)
+                    .setNegativeButton("취소", cancelListener)
+                    .show()
+                    .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        else if(id_view == R.id.display_name) {
+            final TextView name = (TextView) getView().findViewById(id_view);
+            callFunction(name);
+
+        }
+        else if(id_view == R.id.description){
+            final TextView sub_name = (TextView) getView().findViewById(id_view);
+            callFunction(sub_name);
+        }
+
     }
 
 
@@ -207,7 +365,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentImagePath = imageFile.getAbsolutePath();
 
         return imageFile;
     }
@@ -336,53 +493,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    @Override
-    public void onClick(View v) {
-        id_view = v.getId();
-        if(id_view == R.id.profile_image) {
-            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
-                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-                    }
-                    doTakePhotoAction();
-                }
-            };
-            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    doTakeAlbumAction();
-                }
-            };
 
-            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            };
-
-            new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle)
-                    .setTitle("업로드할 이미지 선택")
-                    .setPositiveButton("사진촬영", cameraListener)
-                    .setNeutralButton("앨범선택", albumListener)
-                    .setNegativeButton("취소", cancelListener)
-                    .show()
-                    .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        }
-        else if(id_view == R.id.display_name) {
-            final TextView name = (TextView) getView().findViewById(id_view);
-            callFunction(name);
-
-        }
-        else if(id_view == R.id.description){
-            final TextView sub_name = (TextView) getView().findViewById(id_view);
-            callFunction(sub_name);
-        }
-
-    }
 
     //camera permission
     @Override
