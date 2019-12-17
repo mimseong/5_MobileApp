@@ -334,7 +334,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     /////성민 추가 부분
 
     //사진 촬영 함수
-    private void capturePhoto(){
+    /*private void capturePhoto(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
@@ -350,7 +350,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
 
         }
-    }
+    }*/
 
     //파일 경로와 사진파일 이름 설정
     private File getImageFile(){
@@ -384,9 +384,12 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
+        File imageFile = null;
+        imageFile = getImageFile();
+
         // 임시로 사용할 파일의 경로를 생성
-        String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-        mImageCaptureUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", new File(Environment.getExternalStorageDirectory(), url));
+        //String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+        mImageCaptureUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
         //mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
 
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -422,31 +425,14 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
             case PICK_FROM_CAMERA:
             {
-                /// 성민 추가 부분
-                if(resultCode == RESULT_OK){
 
-                    try {
-                        //경로에서 사진 들고옴
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), mImageCaptureUri);
-
-                        if(bitmap != null) {
-                            //들고온 사진 Image View로 보여줌
-                            //moment_selected_photo.setImageBitmap(bitmap);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
-
-
-                }
-                //// 성민 추가 끝
 
 
                 // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
                 // 이후에 이미지 크롭 어플리케이션을 호출.
                 Intent intent = new Intent("com.android.camera.action.CROP");
                 intent.setDataAndType(mImageCaptureUri, "image/*");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                 // CROP할 이미지를 200*200 크기로 저장
                 intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
@@ -470,8 +456,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                 final Bundle extras = data.getExtras();
 
                 // CROP된 이미지를 저장하기 위한 FILE 경로
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
-                        "/Profile/"+System.currentTimeMillis()+".jpg";
+                String filePath = getContext().getExternalFilesDir("ProfileImage")+".jpg";
 
                 if(extras != null)
                 {
