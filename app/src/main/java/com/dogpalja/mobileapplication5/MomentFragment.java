@@ -26,9 +26,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,26 +75,8 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     //private DB_Manger dbmanger;
 
+    int[] images = {R.drawable.dog, R.drawable.default_image};
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_moment, container, false);
-
-        iv_UserPhoto = (ImageView) view.findViewById(R.id.profile_image);
-        iv_UserPhoto.setOnClickListener(this);
-
-        tv_name = (TextView) view.findViewById(R.id.display_name);
-        tv_name.setOnClickListener(this);
-
-        tv_sub_name = (TextView) view.findViewById(R.id.description);
-        tv_sub_name.setOnClickListener(this);
-
-        gridview = (GridView) view.findViewById(R.id.images_grid_layout);
-
-        return view;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -115,6 +100,67 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         //ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
 
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_moment, container, false);
+
+        iv_UserPhoto = (ImageView) view.findViewById(R.id.profile_image);
+        iv_UserPhoto.setOnClickListener(this);
+
+        tv_name = (TextView) view.findViewById(R.id.display_name);
+        tv_name.setOnClickListener(this);
+
+        tv_sub_name = (TextView) view.findViewById(R.id.description);
+        tv_sub_name.setOnClickListener(this);
+
+        gridview = (GridView) view.findViewById(R.id.images_grid_layout);
+
+        CustomAdaptor customAdaptor = new CustomAdaptor();
+        gridview.setAdapter(customAdaptor);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
+                intent.putExtra("image_tags", "테스트");
+                intent.putExtra("story_image", images[i]);
+                startActivity(intent);
+            }
+        });
+
+        return view;
+    }
+
+    private class CustomAdaptor extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return images.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.row_data, null);
+
+            ImageView image = view.findViewById(R.id.images);
+
+            image.setImageResource(images[i]);
+            return view;
+        }
+    }
+
 
 
     /////성민 추가 부분
@@ -418,5 +464,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
 
 }
