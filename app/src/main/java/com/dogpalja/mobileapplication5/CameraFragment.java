@@ -51,7 +51,7 @@ public class CameraFragment extends Fragment {
     TextView moment_comment_btn, picture_day;
     final int CAPTURE_IMAGE = 1;
 
-
+    String timeStamp, picture_time;
     Uri mImageUri;
 
 
@@ -107,9 +107,6 @@ public class CameraFragment extends Fragment {
 
                     imageToString = convertImageToString();
                     uploadStory();
-                    Toast.makeText(getContext(), mStoryTitle ,Toast.LENGTH_LONG).show();
-
-
                 }else{
                     Toast.makeText(getContext(),"사진 촬영 후 업로드 가능합니다",Toast.LENGTH_LONG).show();
                 }
@@ -222,8 +219,8 @@ public class CameraFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK){
-
-                picture_day.setText(dateOfImage().substring(0, 16));
+                picture_time = dateOfImage().substring(0, 16);
+                picture_day.setText(picture_time);
 
                 try {
                     Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
@@ -247,7 +244,7 @@ public class CameraFragment extends Fragment {
     }
 
     private File getImageFile(){
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         imageName = timeStamp + "_";
         File storageDir = getContext().getExternalFilesDir("Images");
 
@@ -290,22 +287,22 @@ public class CameraFragment extends Fragment {
         mProgressDialog.setMessage("잠시 기다려주세요..");
         mProgressDialog.show();
 
-        Map <String, String> imageMap = new HashMap<>();
-        //imageMap.put("image_name", dateOfImage);
-        imageMap.put("image_name", imageName);
-        imageMap.put("image_encoded", imageToString);
-        imageMap.put("title", mStoryTitle);
-        imageMap.put("time", currentTime);
 
-        // Convert Map to byte array
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream out = new ObjectOutputStream(byteOut);
-            out.writeObject(imageMap);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Map <String, String> imageMap = new HashMap<>();
+//        imageMap.put("image_name", imageName);
+//        imageMap.put("image_encoded", imageToString);
+//        imageMap.put("title", mStoryTitle);
+//        imageMap.put("time", currentTime);
+//
+//        // Convert Map to byte array
+//        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+//        try {
+//            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+//            out.writeObject(imageMap);
+//            out.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         mProgressDialog.dismiss();
 

@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 public class GridItemActivity extends AppCompatActivity {
 
-    String imageName, image, storyTitle, currentTime;
-
     SquareImageView story_image;
-    TextView image_tags;
+    TextView image_tags, image_time;
 
 
     @Override
@@ -21,9 +19,11 @@ public class GridItemActivity extends AppCompatActivity {
 
         image_tags = findViewById(R.id.image_tags);
         story_image = findViewById(R.id.story_image);
+        image_time = findViewById(R.id.image_time);
 
         Intent intent = getIntent();
         image_tags.setText(intent.getStringExtra("image_tags"));
         story_image.setImageResource(intent.getIntExtra("story_image", 0));
+        image_time.setText(intent.getStringExtra("image_time"));
     }
 }

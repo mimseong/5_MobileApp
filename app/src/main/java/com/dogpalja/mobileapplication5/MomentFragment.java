@@ -99,6 +99,8 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
         //ImageView btn_agreeJoin = (ImageView) this.findViewById(R.id.profile_image);
 
+
+
     }
 
     @Override
@@ -127,9 +129,13 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
                 intent.putExtra("image_tags", "테스트문구 - MomentFragment.java");
                 intent.putExtra("story_image", images[i]);
+                intent.putExtra("image_time", "시간 - MomentFragment.java");
                 startActivity(intent);
             }
         });
+
+
+
 
         return view;
     }
