@@ -1,19 +1,26 @@
 package com.dogpalja.mobileapplication5;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -39,7 +46,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -57,14 +66,15 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
-    private static final int CROP_FROM_iMAGE = 2;
+    private static final int CROP_FROM_IMAGE = 2;
+    private static final int REQUEST_FOR_CAMERA = 3;
 
     private Uri mImageCaptureUri;
     private CircleImageView iv_UserPhoto;
     private TextView tv_name;
     private TextView tv_sub_name;
     private int id_view;
-    String absoultePath;
+    private String absoultePath;
     GridView gridview;
 
 
@@ -223,6 +233,13 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+//                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
+//                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+//                    }
+                    if(!checkPermission()){
+                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
+                    };
                     doTakePhotoAction();
                 }
             };
@@ -260,41 +277,71 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    public boolean checkPermission(){
+        int result;
+        List<String> permissionList = new ArrayList<>();
+        List<String> permissions = new ArrayList<>();
+        permissions.add("Manifest.permission.CAMERA");
+        permissions.add("Manifest.permission.WRITE_EXTERNAL_STORAGE");
+        permissions.add("Manifest.permission.READ_EXTERNAL_STORAGE");
+        for (String pm : permissions) {
+            result = ContextCompat.checkSelfPermission(getContext(), pm);
+            if (result != PackageManager.PERMISSION_GRANTED) { //사용자가 해당 권한을 가지고 있지 않을 경우 리스트에 해당 권한명 추가
+                permissionList.add(pm);
+            }
+        }
+        if (!permissionList.isEmpty()) { //리스트에 추가가 되면 권한이 없는것이므로 , 요청을 진행합니다.
+            requestPermissions(permissionList.toArray(new String[permissionList.size()]), REQUEST_FOR_CAMERA);
+        }
+        return true;
+    }
+
 
 
     /////성민 추가 부분
 
     //사진 촬영 함수
     private void doTakePhotoAction(){
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
+        // 임시로 사용할 파일의 경로를 생성
+        //String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 
-        if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            imageFile = getImageFile();
-
-            if (imageFile != null){
-
-                mImageCaptureUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageCaptureUri);
-            }
-
-            startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
-
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        if(photoFile != null){
+            mImageCaptureUri = FileProvider.getUriForFile(
+                    getContext(),
+                    getContext().getApplicationContext().getPackageName() + ".fileprovider",
+                    photoFile);
+        }
+
+//        mImageCaptureUri = FileProvider.getUriForFile(
+//                getContext(),
+//                getContext().getApplicationContext().getPackageName() + ".fileprovider",
+//                new File(Environment.getExternalStorageDirectory(),
+//                        url));
+        //mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
+
+        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+        startActivityForResult(intent, PICK_FROM_CAMERA);
     }
-
-    //파일 경로와 사진파일 이름 설정
-    private File getImageFile(){
-        //사진 찍은 시간 가져옴
-        String imageName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
-        //파일 경로 지정
-        File Dir = getContext().getExternalFilesDir("ProfileImage");
-
-        File imageFile = new File(Dir, imageName + ".jpg");
-
-        Toast.makeText(getContext(),imageFile.getAbsolutePath(),Toast.LENGTH_LONG).show();
-
-        return imageFile;
+    private File createImageFile() throws IOException{
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        //currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 
@@ -331,69 +378,155 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
             case PICK_FROM_CAMERA:
             {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageCaptureUri);
+                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
+                // 이후에 이미지 크롭 어플리케이션을 호출.
+//                getActivity().grantUriPermission("com.android.camera", mImageCaptureUri,
+//                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                    if(bitmap != null) {
-                        iv_UserPhoto.setImageBitmap(bitmap);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
+                Log.d("image", "mImageCaptureUri: " + mImageCaptureUri);
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
+//                List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+//                getActivity().grantUriPermission(list.get(0).activityInfo.packageName, mImageCaptureUri,
+//                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-//                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
-//                // 이후에 이미지 크롭 어플리케이션을 호출.
-//                Intent intent = new Intent("com.android.camera.action.CROP");
-//                intent.setDataAndType(mImageCaptureUri, "image/*");
-//                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//
-//                // CROP할 이미지를 200*200 크기로 저장
-//                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
-//                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
-//                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
-//                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-//                intent.putExtra("scale", true);
-//                intent.putExtra("return-data", true);
-//                startActivityForResult(intent, CROP_FROM_iMAGE); // CROP_FROM_CAMERA case문 이동
+                // CROP할 이미지를 200*200 크기로 저장
+                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
+                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
+                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
+                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
+                intent.putExtra("scale", true);
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent, CROP_FROM_IMAGE); // CROP_FROM_CAMERA case문 이동
                 break;
             }
-            case CROP_FROM_iMAGE:
+            case CROP_FROM_IMAGE:
             {
-//                // 크롭이 된 이후의 이미지를 넘겨 받음.
-//                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
-//                // 임시 파일 삭제.
-//                if(resultCode != RESULT_OK) {
-//                    return;
-//                }
-//
-//                final Bundle extras = data.getExtras();
-//
-//                // CROP된 이미지를 저장하기 위한 FILE 경로
-//                String filePath = getContext().getExternalFilesDir("ProfileImage")+".jpg";
-//
-//                if(extras != null)
-//                {
-//                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
-//                    iv_UserPhoto.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
-//
-//                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-//                    absoultePath = filePath;
-//                    break;
-//
-//                }
-//                // 임시 파일 삭제
-//                File f = new File(mImageCaptureUri.getPath());
-//                if(f.exists())
-//                {
-//                    f.delete();
-//                }
+                // 크롭이 된 이후의 이미지를 넘겨 받음.
+                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
+                // 임시 파일 삭제.
+                if(resultCode != RESULT_OK) {
+                    return;
+                }
+
+                final Bundle extras = data.getExtras();
+
+                // CROP된 이미지를 저장하기 위한 FILE 경로
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
+                        "/SmartWheel/"+System.currentTimeMillis()+".jpg";
+
+                if(extras != null)
+                {
+                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
+                    iv_UserPhoto.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
+
+                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
+                    absoultePath = filePath;
+                    break;
+
+                }
+                // 임시 파일 삭제
+                File f = new File(mImageCaptureUri.getPath());
+                if(f.exists())
+                {
+                    f.delete();
+                }
             }
         }
 
 
     }
 
+    public static String getPath(final Context context, final Uri uri) {
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+// DocumentProvider
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+// ExternalStorageProvider
+                if (isExternalStorageDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    }
+// TODO handle non-primary volumes
+                }
+// DownloadsProvider
+                else if (isDownloadsDocument(uri)) {
+                    final String id = DocumentsContract.getDocumentId(uri);
+                    final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                    return getDataColumn(context, contentUri, null, null);
+                }
+// MediaProvider
+                else if (isMediaDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+                    Uri contentUri = null;
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+                    final String selection = "_id=?";
+                    final String[] selectionArgs = new String[]{
+                            split[1]
+                    };
+                    return getDataColumn(context, contentUri, selection, selectionArgs);
+                }
+            }
+// MediaStore (and general)
+            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                return getDataColumn(context, uri, null, null);
+            }
+// File
+            else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                return uri.getPath();
+            }
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
 
 
     //camera permission
@@ -437,6 +570,9 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
     }
+
+
+
     public void callFunction(final TextView main_label) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
@@ -484,6 +620,8 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
+
 
 
 }
