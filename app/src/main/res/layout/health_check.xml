@@ -71,18 +71,18 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="60dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/vaccine" />
+                    android:src="@drawable/vaccine"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:text="예방접종"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="bottom"/>
             </LinearLayout>
             <!-- 예방접종 끝 -->
 
