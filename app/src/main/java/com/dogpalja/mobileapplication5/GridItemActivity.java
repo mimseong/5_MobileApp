@@ -35,24 +35,19 @@ public class GridItemActivity extends AppCompatActivity {
 
 
 
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inSampleSize = 8;
 
-        String stringImage = intent.getStringExtra("story_image");
-        String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
-        InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
-
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
+//          이미지 String으로 변경하고 사이즈 조절
+//        String stringImage = intent.getStringExtra("story_image");
+//        String imageDataBytes = stringImage.substring(stringImage.indexOf(",")+1);
+//        InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
+//        Display display = getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        Bitmap bitmap = readImageWithSampling(stream,size.x,0);
+//        story_image.setImageBitmap(bitmap);
 
 
-        Bitmap bitmap = readImageWithSampling(stream,size.x,0);
-
-        story_image.setImageBitmap(bitmap);
-
+        //이미지 String으로 변경해서 전송
         ///BitmapFactory.Options options = new BitmapFactory.Options();
         //            options.inSampleSize = 8;
         //
@@ -65,6 +60,7 @@ public class GridItemActivity extends AppCompatActivity {
 
     }
 
+    //사이즈 조절하는 함수
     public Bitmap readImageWithSampling(InputStream stream, int targetWidth, int targetHeight) {
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();

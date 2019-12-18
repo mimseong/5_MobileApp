@@ -122,7 +122,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
                 intent.putExtra("image_tags", storyTitleV.elementAt(i));
-                intent.putExtra("story_image", imageNameV.elementAt(i));
+                //intent.putExtra("story_image", imageNameV.elementAt(i));
                 intent.putExtra("image_time", picture_timeV.elementAt(i));
                 startActivity(intent);
             }
