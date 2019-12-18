@@ -32,9 +32,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -103,72 +107,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         latitudeV = new Vector<String>(files.length);
         longitudeV = new Vector<String>(files.length);
 
-        for(int j = 0; j < files.length; j++) {
-
+        try {
+            readFile(getPositionFile());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-            // Inflate the layout for this fragment
 
         mapView = (MapView) rootView.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-
+        for(int i = 0; i < latitudeV.size(); i++){
+            Toast.makeText(MapFragment.this.getActivity(), latitudeV.elementAt(i) + " " + Integer.toString(i), Toast.LENGTH_SHORT).show();
+        }
 
         return rootView;
     }
 
-    public void MakeList(Map<String, String> map, File toRead){
-        try{
-            FileInputStream fis=new FileInputStream(toRead);
-            ObjectInputStream ois=new ObjectInputStream(fis);
-
-            HashMap<String,String> mapInFile=(HashMap<String,String>)ois.readObject();
-
-            ois.close();
-            fis.close();
-            //print All data in MAP
-            for(Map.Entry<String,String> m :mapInFile.entrySet()){
-                System.out.println(m.getKey()+" : "+m.getValue());
-            }
-        }catch(Exception e){}
+    public void readFile(File file) throws IOException {
+        BufferedReader br=new BufferedReader(new FileReader(file));
+        String line=null;
+        int i = 0;
+        while((line=br.readLine())!=null) {
+            if(i%2 == 0)
+                latitudeV.addElement(line);
+            else
+                longitudeV.addElement(line);
+            i++;
+        }
     }
 
-    //    public void MakeList() throws IOException, ClassNotFoundException {
-//        for(int j = 0; j < files.length; j++) {
-//            FileInputStream fileStream = null;
-//            fileStream = new FileInputStream(storageDir.getAbsolutePath() + "/" + files[j].getName());
-//
-//            ObjectInputStream objectInputStream = null;
-//            objectInputStream = new ObjectInputStream(fileStream);
-//
-//            Object object = null;
-//            object = objectInputStream.readObject();
-//
-//            objectInputStream.close();
-//
-//            HashMap hashMap = (HashMap) object;
-//
-//            Iterator<String> it = hashMap.keySet().iterator();
-//
-//            Toast.makeText(getContext(), "여기 " + Integer.toString(j), Toast.LENGTH_SHORT).show();
-//
-//            while(it.hasNext()) {
-//                Toast.makeText(getContext(), "존재", Toast.LENGTH_SHORT).show();
-//                String key = it.next();
-//                String value = (String) hashMap.get(key);
-//
-//                if(key.equals("latitude")){
-//                    latitudeV.addElement(value);
-//                    //Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
-//
-//                } else if (key.equals("longitude")) {
-//                    longitudeV.addElement(value);
-//                    //Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
+    private File getPositionFile(){
+        File storageDir = getContext().getExternalFilesDir("PinPosition");
+        File Position = new File(storageDir, "location.txt");
+        return Position;
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -205,6 +178,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onMapReady(final GoogleMap googleMap) {
 
         mMap = googleMap;
+        final MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(new LatLng(32, 32));
+        googleMap.addMarker(markerOptions);
         //맵 위치 찍기.
         MapsInitializer.initialize(this.getActivity());
     //    getAddress(getContext(), currentLocation.getLatitude(), currentLocation.getLongitude()); 위치받아오는 getadderess
