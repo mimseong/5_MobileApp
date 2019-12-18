@@ -18,4 +18,7 @@
     <external-path
         name="PinPosition"
         path="Android/data/com.dogpalja.mobileapplication5/files/PinPosition"/>
+    <external-path
+        name="HealthCheck"
+        path="Android/data/com.dogpalja.mobileapplication5/files/HealthCheck"/>
 </paths>
