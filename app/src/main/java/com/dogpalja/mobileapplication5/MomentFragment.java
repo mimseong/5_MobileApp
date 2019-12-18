@@ -38,10 +38,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -134,6 +137,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+        initString();
 
 
         try {
@@ -144,7 +148,67 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
 
+        try {
+            loadResult(getPositionFile());      //저장된 텍스트 값 불러오기
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         return view;
+    }
+
+    public void initString(){
+        tv_name.setText("이름");
+        tv_sub_name.setText("강아지 소개");
+    }
+
+//여기추가
+    public void loadResult(File file) throws IOException {
+        BufferedReader br=new BufferedReader(new FileReader(file));
+        String line=null;
+
+        int i = 0;
+        while((line=br.readLine())!=null) {
+            if(i == 0)
+                tv_name.setText(line);
+            else
+                tv_sub_name.setText(line);
+            i++;
+        }
+    }
+
+
+    public void saveResult(){
+        writeSettings(getPositionFile());
+    }
+
+    public void writeSettings(File file){
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(file, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String writeTmp = "";
+        writeTmp += tv_name.getText() + "\n";
+        writeTmp += tv_sub_name.getText() + "\n";
+
+        try {
+            // 기존 파일의 내용에 이어서 쓰려면 true를, 기존 내용을 없애고 새로 쓰려면 false를 지정한다.
+            writer.write(writeTmp);
+            writer.flush();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(writer != null) writer.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class CustomAdaptor extends BaseAdapter {
@@ -170,7 +234,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             ImageView imageView = view.findViewById(R.id.images);
             imageView.setPadding(1,1,1,1);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //imageView.setImageResource(images[i]);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 8;
@@ -335,6 +398,12 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         return image;
     }
 
+
+    private File getPositionFile(){
+        File storageDir = getContext().getExternalFilesDir("ProfileTxt");
+        File Position = new File(storageDir, "profile.txt");
+        return Position;
+    }
 
 
     /////성민 추가 부분 끝
@@ -595,6 +664,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                 // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
                 // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
                 main_label.setText(name.getText().toString());
+                saveResult();
 
                 // 커스텀 다이얼로그를 종료한다.
                 dlg.dismiss();
