@@ -44,17 +44,6 @@
                 android:textColor="@color/black"
                 android:text="의 건강체크"
                 android:layout_gravity="center_vertical"/>
-
-            <Button
-                android:id="@+id/insert"
-                android:layout_width="60dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="8dp"
-                android:text="시작"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
         </LinearLayout>
         <!-- 몽이의 건강체크 끝 -->
 
@@ -74,7 +63,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/vaccine" />
 
@@ -390,14 +379,13 @@
 
                     <Button
                         android:id="@+id/insert_w"
-                        android:layout_width="60dp"
-                        android:layout_height="35dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:text="입력"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:onClick="onInsertClicked"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
                 <!-- 현재 몸무게 끝 -->
 
@@ -495,8 +483,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:onClick="onVomitClicked"/>
+                        android:textSize="20sp" />
                     <TextView
                         android:id="@+id/select_vomit"
                         android:layout_width="wrap_content"

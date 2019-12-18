@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,70 +54,64 @@ public class HealthMain extends Activity {
         bInsert = (Button)findViewById(R.id.insert);
         bInsert_w = (Button)findViewById(R.id.insert_w);
 
-        bInsert.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                return false;
+        bInsert_w.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eBefore.setText(eNow.getText().toString());
             }
         });
 
-    }
-
-    //몸무게 변환
-    public void onInsertClicked(View view) {
-        eBefore.setText(eNow.getText().toString());
-    }
-
-    //구토 체크박스 클릭 시 대화상자 띄우는 부분
-    public void onVomitClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-
-        if (checked) {
-            final String[] vomitArray = new String[]{"흰색+거품", "노란색", "붉은색", "초록색", "사료색", "암적색"};
-            AlertDialog.Builder dlg = new AlertDialog.Builder(
-                    HealthMain.this);
-            dlg.setTitle("가장 유사한 구토의 색 및 형태는?");
-            dlg.setSingleChoiceItems(vomitArray, 0,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case 0:
-                                    Toast.makeText(getApplicationContext(), "흰색은 거품토! 기침 및 호흡기 문제일 수 있어요",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                                case 1:
-                                    Toast.makeText(getApplicationContext(), "노란색은 일명 공복 구토! 배고프다고 하네요!",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                                case 2:
-                                    Toast.makeText(getApplicationContext(), "붉은색은 매우 위험해요! 위나 입안, 식도의 출혈을 확인하세요!",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                                case 3:
-                                    Toast.makeText(getApplicationContext(), "초록색은 답즙 구토에요! 십이지장의 문제거나 물을 너무 마셨을 수 있어요!",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                                case 4:
-                                    Toast.makeText(getApplicationContext(), "사료색은 소화불량 구토! 과식했을 확률 90%!",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                                case 5:
-                                    Toast.makeText(getApplicationContext(), "WARNNING!!!!!!소장, 대장, 위 등의 문제! 병원으로 즉시 내원!!",
-                                            Toast.LENGTH_LONG).show();
-                                    break;
-                            }
-                            vomit_s.setText("상태 : " + vomitArray[which]);
-                        }
-                    });
-            dlg.setPositiveButton("닫기", null);
-            dlg.show();
-        }
-
-        else{
-            Toast.makeText(getApplicationContext(), "구토는 멈췄나요? 뭐니뭐니해도 건강이 최고!",
-                    Toast.LENGTH_LONG).show();
-            vomit_s.setText("상태 : 건강함 :)");
-        }
+        cVomit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cVomit.isChecked() == true) {
+                    final String[] vomitArray = new String[]{"흰색+거품", "노란색", "붉은색", "초록색", "사료색", "암적색"};
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(
+                            HealthMain.this);
+                    dlg.setTitle("가장 유사한 구토의 색 및 형태는?");
+                    dlg.setSingleChoiceItems(vomitArray, 0,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case 0:
+                                            Toast.makeText(getApplicationContext(), "흰색은 거품토! 기침 및 호흡기 문제일 수 있어요",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                        case 1:
+                                            Toast.makeText(getApplicationContext(), "노란색은 일명 공복 구토! 배고프다고 하네요!",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                        case 2:
+                                            Toast.makeText(getApplicationContext(), "붉은색은 매우 위험해요! 위나 입안, 식도의 출혈을 확인하세요!",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                        case 3:
+                                            Toast.makeText(getApplicationContext(), "초록색은 답즙 구토에요! 십이지장의 문제거나 물을 너무 마셨을 수 있어요!",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                        case 4:
+                                            Toast.makeText(getApplicationContext(), "사료색은 소화불량 구토! 과식했을 확률 90%!",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                        case 5:
+                                            Toast.makeText(getApplicationContext(), "WARNNING!!!!!!소장, 대장, 위 등의 문제! 병원으로 즉시 내원!!",
+                                                    Toast.LENGTH_LONG).show();
+                                            break;
+                                    }
+                                    vomit_s.setText("상태 : " + vomitArray[which]);
+                                }
+                            });
+                    dlg.setPositiveButton("닫기", null);
+                    dlg.show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "구토는 멈췄나요? 뭐니뭐니해도 건강이 최고!",
+                            Toast.LENGTH_LONG).show();
+                    vomit_s.setText("상태 : 건강함 :)");
+                }
+            }
+        });
     }
 
     //설사 체크박스 클릭 시 토스트 띄우는 부분
