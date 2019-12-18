@@ -62,13 +62,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
     //경도위도 배열
-    Vector<String> latitudeV;
-    Vector<String> longitudeV;
-
-    //현재 위치 받아오기
-    private LocationManager locationManager;
-    Location currentLocation = null;
-    private static final int REQUEST_CODE_LOCATION =2;
+    Vector<Double> latitudeV;
+    Vector<Double> longitudeV;
 
     public MapFragment() {
         // Required empty public constructor
@@ -79,17 +74,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //내위치 받아오는 부분 선언
+        //내위치 받아오는 부분 선언
         //https://vvh-avv.tistory.com/138 << 여기서 봤다.
-        locationManager = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
-    Location userLocation = getMyLocation();
-    if( userLocation != null){
-        double latitude = userLocation.getLatitude();
-        double longitude = userLocation.getLongitude();
-        userLocation.setLatitude(latitude);
-        userLocation.setLongitude(longitude);
-        System.out.println("///////// 현재 내 위치  : " +latitude + "," +longitude);
-    }
 
     }
 
@@ -104,8 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         files = storageDir.listFiles();
 
 
-        latitudeV = new Vector<String>(files.length);
-        longitudeV = new Vector<String>(files.length);
+        latitudeV = new Vector<Double>(files.length);
+        longitudeV = new Vector<Double>(files.length);
 
         try {
             readFile(getPositionFile());
@@ -130,9 +116,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         int i = 0;
         while((line=br.readLine())!=null) {
             if(i%2 == 0)
-                latitudeV.addElement(line);
+                latitudeV.addElement(Double.parseDouble(line));
             else
-                longitudeV.addElement(line);
+                longitudeV.addElement(Double.parseDouble(line));
             i++;
         }
     }
@@ -149,7 +135,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mapView.onSaveInstanceState(outState);
     }
 
-   @Override
+    @Override
     public void onResume() {
         mapView.onResume();
         super.onResume();
@@ -179,11 +165,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         mMap = googleMap;
         final MarkerOptions markerOptions = new MarkerOptions();
+        for(int i =0; i <latitudeV.size(); i++){
+            markerOptions.position(new LatLng(latitudeV.get(i), longitudeV.get(i)));
+            googleMap.addMarker(markerOptions);
+        }
         markerOptions.position(new LatLng(32, 32));
         googleMap.addMarker(markerOptions);
         //맵 위치 찍기.
         MapsInitializer.initialize(this.getActivity());
-    //    getAddress(getContext(), currentLocation.getLatitude(), currentLocation.getLongitude()); 위치받아오는 getadderess
+        //    getAddress(getContext(), currentLocation.getLatitude(), currentLocation.getLongitude()); 위치받아오는 getadderess
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(35.89, 128.61), 10);
         googleMap.animateCamera(cameraUpdate);
         //현재위치 구현
@@ -194,27 +184,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             @Override
             public void onMapClick(LatLng point) {
                 final MarkerOptions mOptions = new MarkerOptions();
-            // 마커 타이틀
+                // 마커 타이틀
                 mOptions.title("대표사진보기");
                 mOptions.position(new LatLng(point.latitude, point.longitude));
-            // 마커(핀) 추가 , 맵 클릭시 확인창 띄우기
-            AlertDialog.Builder dialog = new AlertDialog.Builder(MapFragment.this.getActivity());
+                // 마커(핀) 추가 , 맵 클릭시 확인창 띄우기
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MapFragment.this.getActivity());
                 dialog.setTitle("가봤던 곳").setMessage("핀을 추가 하시겠습니까?")
                         .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.i("clis", "마커 추가");
-                    googleMap.addMarker(mOptions); // 마커 추가.
-                    Toast.makeText(MapFragment.this.getActivity(), "추가 하였습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.i("clis", "클릭했습니다.");
-                    Toast.makeText(MapFragment.this.getActivity(), "추가 하지 않았습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }).create().show();
-        }
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.i("clis", "마커 추가");
+                                googleMap.addMarker(mOptions); // 마커 추가.
+                                Toast.makeText(MapFragment.this.getActivity(), "추가 하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("clis", "클릭했습니다.");
+                        Toast.makeText(MapFragment.this.getActivity(), "추가 하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }).create().show();
+            }
         });
 
 //정보창 클릭 리스너
@@ -255,49 +245,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 return false;
             }
         });
-    }
-
-
-
-
-    //내 위치 받아오기~
-    private Location getMyLocation(){
-
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            System.out.println("/////////권한요청 해야함");
-         //   ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, getMyLocation());
-        }
-        else {
-            System.out.println("/////////권한요청 안해도됨");
-            //수동으로 위치 구하기
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            currentLocation = locationManager.getLastKnownLocation(locationProvider);
-            if(currentLocation != null){
-               double lon = currentLocation.getLongitude();
-               double lat = currentLocation.getLatitude();
-            }
-        }
-        return currentLocation;
-    }
-
-    //위도 경도로 주소 구하기.
-    public static String getAddress(Context mContext, double lat, double lng){
-        String nowAddress = "현재 위치를 확인 할 수 없습니다.";
-        Geocoder geocoder = new Geocoder(mContext, Locale.KOREA);
-        List<Address> address;
-        try{
-            if (geocoder != null){
-                address = geocoder.getFromLocation(lat, lng, 1);
-                if(address != null && address.size() > 0){
-                    String currentLocationAddress = address.get(0).getAddressLine(0).toString();
-                    nowAddress = currentLocationAddress;
-                }
-            }
-        } catch (IOException e) {
-            nowAddress = "주소를 가져 올 수 없습니다.";
-            e.printStackTrace();
-        }
-        return nowAddress;
     }
 }

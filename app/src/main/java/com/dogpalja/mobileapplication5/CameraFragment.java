@@ -61,11 +61,10 @@ public class CameraFragment extends Fragment {
 
     String timeStamp, picture_time;
     Uri mImageUri;
-    //private LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); // 현재 위치
+    private LocationManager locationManager; // 현재 위치
     //위도 경도
+
     String latitude, longitude;
-
-
 
 
     public CameraFragment() {
@@ -73,25 +72,25 @@ public class CameraFragment extends Fragment {
     }
 
     //현재 위도 경도
-//    public void get_gps(){
-//        //권한 체크
-//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-//            return ;
-//        }
-//
-//        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        if(lastKnownLocation != null){
-//            double lng = lastKnownLocation.getLongitude();
-//            double lat = lastKnownLocation.getLatitude();
-//            latitude = Double.toString(lat); // string 으로 변환
-//            longitude = Double.toString(lng);
-//        }
-//    }
+    public void get_gps(){
+        //권한 체크
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return ;
+        }
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(lastKnownLocation != null){
+            double lng = lastKnownLocation.getLongitude();
+            double lat = lastKnownLocation.getLatitude();
+            latitude = Double.toString(lat); // string 으로 변환
+            longitude = Double.toString(lng);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //get_gps();
+        get_gps();
     }
 
     @Override
@@ -153,11 +152,8 @@ public class CameraFragment extends Fragment {
 
     }
 
-
-
     //이미지 크기 변경하는 메소드
     public Bitmap resizeBitmap(Bitmap source){
-
         int targetWidth = source.getWidth();
         int targetHight = targetWidth;
 
@@ -247,23 +243,23 @@ public class CameraFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK){
-                picture_time = dateOfImage().substring(0, 16);
-                picture_day.setText(picture_time);
+            picture_time = dateOfImage().substring(0, 16);
+            picture_day.setText(picture_time);
 
-                try {
-                    Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
-                    float degree = getDegree();
-                    Toast.makeText(getContext(),Float.toString(degree),Toast.LENGTH_LONG).show();
-                    bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
+            try {
+                Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                float degree = getDegree();
+                Toast.makeText(getContext(),Float.toString(degree),Toast.LENGTH_LONG).show();
+                bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
 
-                    if(bitmap != null) {
-                        OkToUpload = true;
-                        moment_selected_photo.setImageBitmap(bitmap);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(bitmap != null) {
+                    OkToUpload = true;
+                    moment_selected_photo.setImageBitmap(bitmap);
                 }
-                Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -302,8 +298,11 @@ public class CameraFragment extends Fragment {
         imageMap.put("time", picture_time);
         writeSettings(imageMap, getTxtFile());
 
+        get_gps();
         writeSettings1(latitude+"\n", getPositionFile());
         writeSettings1(longitude+"\n", getPositionFile());
+        Toast.makeText(getContext(), latitude,Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), longitude,Toast.LENGTH_LONG).show();
 
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -374,32 +373,23 @@ public class CameraFragment extends Fragment {
         return timestamp.toString();
     }
 
-    //locationListener
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        double lat = 0.0;
-//        double lng = 0.0;
-//        if(location.getProvider().equals(LocationManager.GPS_PROVIDER)){
-//            lat = location.getLatitude();
-//            lng = location.getLongitude();
-//        }
-//    }
 
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//    }
+    final LocationListener gpsLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            double lon = location.getLongitude();
+            double lat = location.getLongitude();
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+    };
 
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-//            return;
-//        }
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) getActivity());
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//
-//    }
+
 }
