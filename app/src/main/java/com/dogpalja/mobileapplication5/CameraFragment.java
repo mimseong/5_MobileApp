@@ -86,8 +86,6 @@ public class CameraFragment extends Fragment{
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, gpsLocationListener);
             latitude = Double.toString(lat); // string 으로 변환
             longitude = Double.toString(lng);
-            Toast.makeText(getContext(),latitude+ "      " + longitude ,Toast.LENGTH_LONG).show();
-            //Toast.makeText(getContext(),longitude,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -236,7 +234,6 @@ public class CameraFragment extends Fragment{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
         }
     }
 

@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -76,7 +75,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mapView.getMapAsync(this);
 
         for(int i = 0; i < latitudeV.size(); i++){
-            Toast.makeText(MapFragment.this.getActivity(), latitudeV.elementAt(i) + " " + Integer.toString(i), Toast.LENGTH_SHORT).show();
         }
 
         return rootView;
