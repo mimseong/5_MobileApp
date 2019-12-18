@@ -217,8 +217,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             }
 
         }
-
-        Toast.makeText(getContext(), Integer.toString(picture_timeV.size()),Toast.LENGTH_LONG).show();
     }
 //
 //    public void readSetttings() {
