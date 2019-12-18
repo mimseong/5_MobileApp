@@ -131,7 +131,12 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(OkToUpload) {
-                    mStoryTitle = moment_comment_tv.getText().toString();
+                    String comment = moment_comment_tv.getText().toString();
+
+                    if(comment.equals("클릭하여 코멘트를 남기세요"))
+                        mStoryTitle = "";
+                    else
+                        mStoryTitle = comment;
 
                     uploadStory();
                 }else{
@@ -258,6 +263,7 @@ public class CameraFragment extends Fragment {
             return;
         }
 
+
         String imageToString = convertImageToString();
 
         Map<String, String> imageMap = new HashMap<>();
@@ -269,8 +275,6 @@ public class CameraFragment extends Fragment {
         get_gps();
         writeSettings1(latitude+"\n", getPositionFile());
         writeSettings1(longitude+"\n", getPositionFile());
-        Toast.makeText(getContext(), latitude,Toast.LENGTH_LONG).show();
-        Toast.makeText(getContext(), longitude,Toast.LENGTH_LONG).show();
 
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();

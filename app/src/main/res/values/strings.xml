@@ -2,6 +2,7 @@
     <string name="app_name">MobileApplication5</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="inputString">클릭하여 코멘트를 남기세요</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
