@@ -188,36 +188,6 @@ public class CameraFragment extends Fragment {
         return null;
     }
 
-    //각도 알아내는 메소드
-    public float getDegree(){
-        try{
-            //이미지 파일에 저장된 정보를 가져온다
-            ExifInterface exif = new ExifInterface(mImageUri.getPath());
-
-            int degree = 0;
-
-            //회전 각도 값, 없으면 -1
-            int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
-            switch (ori){
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    degree = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    degree = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    degree = 270;
-                    break;
-            }
-            return (float)degree;
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
 
     //사진 촬영 함수
     private void capturePhoto(){
@@ -248,9 +218,7 @@ public class CameraFragment extends Fragment {
 
             try {
                 Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
-                float degree = getDegree();
-                Toast.makeText(getContext(),Float.toString(degree),Toast.LENGTH_LONG).show();
-                bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), degree);
+                bitmap = rotateBitmap(resizeBitmap(bitmap_tmp), 90);
 
                 if(bitmap != null) {
                     OkToUpload = true;
