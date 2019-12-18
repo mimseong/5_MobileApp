@@ -1,6 +1,5 @@
 package com.dogpalja.mobileapplication5;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,12 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HealthMain extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class HealthMain extends AppCompatActivity {
 
     TextView vomit_s, tagNum, eV1date, eV2date, eV3date, eV4date, eHdate, eRdate,  eBefore;
     EditText eName, eNow, TN;
     CheckBox cV1, cV2, cV3, cV4, cH, cR, cNT, cVomit, cDiar, cNasal;
-    Button bInsert, bInsert_w;
+    Button bInsert_w;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,13 @@ public class HealthMain extends Activity {
         cDiar = (CheckBox) findViewById(R.id.diar);
         cNasal = (CheckBox) findViewById(R.id.nasal);
 
-        bInsert = (Button)findViewById(R.id.insert);
         bInsert_w = (Button)findViewById(R.id.insert_w);
 
         bInsert_w.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eBefore.setText(eNow.getText().toString());
+                Toast.makeText(getApplicationContext(), "버튼클릭", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -112,18 +113,19 @@ public class HealthMain extends Activity {
                 }
             }
         });
-    }
 
-    //설사 체크박스 클릭 시 토스트 띄우는 부분
-    public void onDiarClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-
-        if (checked)
-            Toast.makeText(getApplicationContext(), "우선은 금식! 지속적이면 병원에 데려가주세요!",
-                    Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(getApplicationContext(), "이제 괜찮아졌나요? 간식 급여는 신중하게 해주세요 :)",
-                    Toast.LENGTH_LONG).show();
+        cDiar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cDiar.isChecked() == true) {
+                    Toast.makeText(getApplicationContext(), "우선은 금식! 지속적이면 병원에 데려가주세요!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "이제 괜찮아졌나요? 간식 급여는 신중하게 해주세요 :)",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     //콧물 체크박스 클릭 시 토스트 띄우는 부분

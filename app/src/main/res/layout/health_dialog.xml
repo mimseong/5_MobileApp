@@ -1,36 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="@drawable/customdialog_bg">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/tag" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="등록증 번호"
-            android:textColor="@color/black"
-            android:textSize="18sp">
-        </TextView>
-    </LinearLayout>
+            android:id="@+id/tagN"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:text="인식표 등록번호 입력"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/Buttoncancel"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/title"
+            android:text="취소"
+            android:textColor="#333333"
+            android:background="#00ff0000"/>
+
+        <Button
+            android:id="@+id/Buttonok"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_alignRight="@+id/title"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="#333333"
+            android:background="#00ff0000"
+            />
+
+    </RelativeLayout>
+
+
     <EditText
-        android:id="@+id/tagnumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="숫자만 입력하세요"
-        android:inputType="numberDecimal"
-        android:textColor="@color/black"
-        android:textSize="12sp"/>
+        android:id="@+id/tagnum"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        android:hint="등록번호를 입력하세요."
+        android:background="#00ff0000"/>
 
 </LinearLayout>

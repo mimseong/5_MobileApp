@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".HealthMain">
+    tools:context=".HealthFragment">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -32,7 +32,7 @@
                 android:layout_marginTop="30dp"
                 android:textColor="@color/black"
                 android:textSize="25sp"
-                android:hint="  첫째  "
+                android:hint="  아가  "
                 android:layout_gravity="center_vertical"/>
 
             <TextView
@@ -513,8 +513,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:onClick="onDiarClicked"/>
+                        android:textSize="20sp" />
                 </LinearLayout>
                 <!-- 설사 끝 -->
 
@@ -537,8 +536,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:onClick="onNasalClicked" />
+                        android:textSize="20sp" />
                 </LinearLayout>
                 <!-- 콧물 끝 -->
 
