@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.io.BufferedReader;
@@ -31,6 +33,7 @@ public class HealthFragment extends Fragment {
     EditText eName, eNow;
     CheckBox cV1, cV2, cV3, cV4, cH, cR, cNT, cVomit, cDiar, cNasal;
     ImageButton bInsert, bInsert_w;
+    Button btn_capture_img;
 
     String[] data;
 
@@ -60,7 +63,6 @@ public class HealthFragment extends Fragment {
         init(view);             //변수 값 만들기
         initString();           //String 배열 초기화
         putOnClickListener();   //버튼에 onClick 함수 달기
-        saveResult();           //문자열 내장 메모리에 저장
 
         try {
             loadResult(getPositionFile());      //저장된 텍스트 값 불러오기
@@ -68,11 +70,19 @@ public class HealthFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-        Toast.makeText(getContext(), data[0], Toast.LENGTH_LONG).show();
-
-        // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btn_capture_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveResult();           //문자열 내장 메모리에 저장
+            }
+        });
     }
 
     public void initString(){
@@ -420,5 +430,9 @@ public class HealthFragment extends Fragment {
 
         bInsert = (ImageButton) view.findViewById(R.id.insert);
         bInsert_w = (ImageButton) view.findViewById(R.id.insert_w);
+
+        btn_capture_img = (Button) view.findViewById(R.id.btn_capture_img);
     }
+
+
 }
