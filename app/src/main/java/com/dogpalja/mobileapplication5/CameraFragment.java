@@ -1,16 +1,23 @@
 package com.dogpalja.mobileapplication5;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -28,6 +35,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
@@ -53,9 +61,9 @@ public class CameraFragment extends Fragment {
 
     String timeStamp, picture_time;
     Uri mImageUri;
-
-
-    String latitude = "35.887536", longitude = "128.611625";
+    //private LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); // 현재 위치
+    //위도 경도
+    String latitude, longitude;
 
 
 
@@ -64,10 +72,26 @@ public class CameraFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //현재 위도 경도
+//    public void get_gps(){
+//        //권한 체크
+//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//            return ;
+//        }
+//
+//        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        if(lastKnownLocation != null){
+//            double lng = lastKnownLocation.getLongitude();
+//            double lat = lastKnownLocation.getLatitude();
+//            latitude = Double.toString(lat); // string 으로 변환
+//            longitude = Double.toString(lng);
+//        }
+//    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //get_gps();
     }
 
     @Override
@@ -260,7 +284,7 @@ public class CameraFragment extends Fragment {
 
     private File getPositionFile(){
         File storageDir = getContext().getExternalFilesDir("PinPosition");
-        File Position = new File(storageDir, imageName + ".ser");
+        File Position = new File(storageDir, "location.txt");
         return Position;
     }
 
@@ -278,10 +302,8 @@ public class CameraFragment extends Fragment {
         imageMap.put("time", picture_time);
         writeSettings(imageMap, getTxtFile());
 
-        Map<String, String> pinMap = new HashMap<>();
-        imageMap.put("longitude", longitude);
-        imageMap.put("latitude", latitude);
-        writeSettings1(pinMap, getPositionFile());
+        writeSettings1(latitude+"\n", getPositionFile());
+        writeSettings1(longitude+"\n", getPositionFile());
 
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -291,16 +313,24 @@ public class CameraFragment extends Fragment {
         OkToUpload = false;
     }
 
-    public void writeSettings1(Map<String, String> map, File fileOne){
-        try{
-            FileOutputStream fos=new FileOutputStream(fileOne);
-            ObjectOutputStream oos=new ObjectOutputStream(fos);
+    public void writeSettings1(String message, File file){
+        FileWriter writer = null;
 
-            oos.writeObject(map);
-            oos.flush();
-            oos.close();
-            fos.close();
-        }catch(Exception e){}
+        try {
+            // 기존 파일의 내용에 이어서 쓰려면 true를, 기존 내용을 없애고 새로 쓰려면 false를 지정한다.
+            writer = new FileWriter(file, true);
+            writer.write(message);
+            writer.flush();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(writer != null) writer.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void writeSettings(Map<String, String> imageMap, File fileName) {
@@ -344,4 +374,32 @@ public class CameraFragment extends Fragment {
         return timestamp.toString();
     }
 
+    //locationListener
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        double lat = 0.0;
+//        double lng = 0.0;
+//        if(location.getProvider().equals(LocationManager.GPS_PROVIDER)){
+//            lat = location.getLatitude();
+//            lng = location.getLongitude();
+//        }
+//    }
+
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//            return;
+//        }
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) getActivity());
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 }
