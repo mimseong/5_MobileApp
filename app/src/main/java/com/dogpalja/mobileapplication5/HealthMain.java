@@ -2,14 +2,12 @@ package com.dogpalja.mobileapplication5;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,14 +18,6 @@ public class HealthMain extends Activity {
     EditText eName, eNow, TN;
     CheckBox cV1, cV2, cV3, cV4, cH, cR, cNT, cVomit, cDiar, cNasal;
     Button bInsert, bInsert_w;
-    View dialogView;
-
-    private DatePickerDialog.OnDateSetListener callbackMethod;
-    private DatePickerDialog.OnDateSetListener callbackMethod2;
-    private DatePickerDialog.OnDateSetListener callbackMethod3;
-    private DatePickerDialog.OnDateSetListener callbackMethod4;
-    private DatePickerDialog.OnDateSetListener callbackMethodH;
-    private DatePickerDialog.OnDateSetListener callbackMethodR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,91 +54,12 @@ public class HealthMain extends Activity {
         bInsert = (Button)findViewById(R.id.insert);
         bInsert_w = (Button)findViewById(R.id.insert_w);
 
-        callbackMethod = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eV1date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일");
-            }
-        };
-
-        callbackMethod2 = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eV2date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
-            }
-        };
-
-        callbackMethod3 = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eV3date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
-            }
-        };
-
-        callbackMethod4 = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eV4date.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
-            }
-        };
-
-        callbackMethodH = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eHdate.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
-            }
-        };
-
-        callbackMethodR = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                eRdate.setText("접종일 : " + year + "년  " + monthOfYear+1 + "월  " + dayOfMonth + "일  ");
-            }
-        };
-
         bInsert.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 return false;
             }
         });
 
-    }
-
-    //인식표 체크박스 클릭 시 액션
-    public void onNameTagClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-
-        if (checked) {
-            dialogView = (View) View.inflate(HealthMain.this,
-                    R.layout.health_dialog, null);
-            AlertDialog.Builder dlg = new AlertDialog.Builder(HealthMain.this);
-            dlg.setTitle("인식표 등록번호 입력");
-            dlg.setView(dialogView);
-            dlg.setPositiveButton("확인",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            TN = (EditText) dialogView.findViewById(R.id.tagnumber);
-                            tagNum.setText(TN.getText().toString());
-                        }
-                    });
-            dlg.setNegativeButton("취소", null);
-        }
-        else
-            Toast.makeText(getApplicationContext(), "인식표는 필수입니다",
-                    Toast.LENGTH_LONG).show();
     }
 
     //몸무게 변환
@@ -233,39 +144,4 @@ public class HealthMain extends Activity {
                     Toast.LENGTH_LONG).show();
     }
 
-    public void OnClickDataPicker(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, 2019, 12, 10);
-        dialog.show();
-    }
-
-    public void OnClickDataPicker2(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod2, 2019, 12, 10);
-        dialog.show();
-    }
-
-    public void OnClickDataPicker3(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod3, 2019, 12, 10);
-        dialog.show();
-    }
-
-    public void OnClickDataPicker4(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod4, 2019, 12, 10);
-        dialog.show();
-    }
-
-    public void OnClickDataPickerH(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethodH, 2019, 12, 10);
-        dialog.show();
-    }
-
-    public void OnClickDataPickerR(View view)
-    {
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethodR, 2019, 12, 10);
-        dialog.show();
-    }
 }
