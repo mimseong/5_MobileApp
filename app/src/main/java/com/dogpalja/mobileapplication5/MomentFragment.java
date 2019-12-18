@@ -1,11 +1,8 @@
 package com.dogpalja.mobileapplication5;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -37,17 +34,14 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -66,7 +60,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private static final int CROP_FROM_iMAGE = 2;
 
     private Uri mImageCaptureUri;
-    private ImageView iv_UserPhoto;
+    private CircleImageView iv_UserPhoto;
     private TextView tv_name;
     private TextView tv_sub_name;
     private int id_view;
@@ -75,14 +69,14 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
 
     //성민 추가 변수
-    String imageName;
+
+
     File[] files;
-    int[] images = {R.drawable.dog, R.drawable.default_image};
     Vector<String> imageNameV;
     Vector<String> storyTitleV;
     Vector<String> picture_timeV;
 
-    File storageDir;
+    File storageDir, imageFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -97,7 +91,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_moment, container, false);
 
-        iv_UserPhoto = (ImageView) view.findViewById(R.id.profile_image);
+        iv_UserPhoto = view.findViewById(R.id.profile_image);
         iv_UserPhoto.setOnClickListener(this);
 
         tv_name = (TextView) view.findViewById(R.id.display_name);
@@ -108,11 +102,14 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
         storageDir = getContext().getExternalFilesDir("PictureDate");
         files = storageDir.listFiles();
+
         gridview = (GridView) view.findViewById(R.id.images_grid_layout);
         CustomAdaptor customAdaptor = new CustomAdaptor();
+
         imageNameV = new Vector<String>(files.length);
         picture_timeV = new Vector<String>(files.length);
         storyTitleV = new Vector<String>(files.length);
+
         gridview.setAdapter(customAdaptor);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -182,6 +179,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     public void MakeList() throws IOException, ClassNotFoundException {
 
+
         for(int j = 0; j < files.length; j++) {
 
 
@@ -201,7 +199,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
             Iterator<String> it = hashMap.keySet().iterator();
 
-            while (it.hasNext()) {  // 맵키가 존재할경우
+            while(it.hasNext()) {  // 맵키가 존재할경우
 
                 String key = it.next();  // 맵키를 꺼냄
                 String value = (String) hashMap.get(key);  // 키에 해당되는 객체 꺼냄
@@ -213,81 +211,18 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                 } else if(key.equals("time")){
                     storyTitleV.addElement(value);
                 }
-
             }
 
         }
     }
-//
-//    public void readSetttings() {
-//        files = storageDir.listFiles();
-//        imageNameV = new Vector<String>(files.length);
-//        picture_timeV = new Vector<String>(files.length);
-//        storyTitleV = new Vector<String>(files.length);
-//
-//        File cacheDir = null;
-//        File appDirectory = null;
-//        if (android.os.Environment.getExternalStorageState().
-//                equals(android.os.Environment.MEDIA_MOUNTED)) {
-//            cacheDir = getApplicationContext().getExternalCacheDir();
-//            appDirectory = new File(cacheDir + subFolder);
-//        } else {
-//            cacheDir = getApplicationContext().getCacheDir();
-//            String BaseFolder = cacheDir.getAbsolutePath();
-//            appDirectory = new File(BaseFolder + subFolder);
-//        }
-//
-//        if (appDirectory != null && !appDirectory.exists()) return; // File does not exist
-//
-//        File fileName = new File(appDirectory, file);
-//
-//        FileInputStream fis = null;
-//        ObjectInputStream in = null;
-//        try {
-//            fis = new FileInputStream(fileName);
-//            in = new ObjectInputStream(fis);
-//            Map<String, String> myHashMap = (Map<String, String>) in.readObject();
-//            userSettings = myHashMap;
-//            System.out.println("count of hash map::"+userSettings.size() + " " + userSettings);
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (StreamCorruptedException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }finally {
-//
-//            try {
-//                if(fis != null) {
-//                    fis.close();
-//                }
-//                if(in != null) {
-//                    in.close();
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     @Override
     public void onClick(View v) {
-
-
         id_view = v.getId();
         if(id_view == R.id.profile_image) {
             DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
-                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-                    }
                     doTakePhotoAction();
                 }
             };
@@ -330,15 +265,15 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     /////성민 추가 부분
 
     //사진 촬영 함수
-    /*private void capturePhoto(){
+    private void doTakePhotoAction(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
         if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            File imageFile = null;
             imageFile = getImageFile();
 
             if (imageFile != null){
+
                 mImageCaptureUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageCaptureUri);
             }
@@ -346,23 +281,18 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
 
         }
-    }*/
+    }
 
     //파일 경로와 사진파일 이름 설정
     private File getImageFile(){
         //사진 찍은 시간 가져옴
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        imageName = timeStamp + "_";
+        String imageName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
         //파일 경로 지정
-        File storageDir = getContext().getExternalFilesDir("ProfileImage");
+        File Dir = getContext().getExternalFilesDir("ProfileImage");
 
-        File imageFile = null;
-        try {
-            //사진 이름 지정
-            imageFile = File.createTempFile(imageName, ".jpg", storageDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File imageFile = new File(Dir, imageName + ".jpg");
+
+        Toast.makeText(getContext(),imageFile.getAbsolutePath(),Toast.LENGTH_LONG).show();
 
         return imageFile;
     }
@@ -371,26 +301,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
     /////성민 추가 부분 끝
 
-
-    /**
-     * 카메라에서 사진 촬영
-     */
-    public void doTakePhotoAction() // 카메라 촬영 후 이미지 가져오기
-    {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        File imageFile = null;
-        imageFile = getImageFile();
-
-        // 임시로 사용할 파일의 경로를 생성
-        //String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-        mImageCaptureUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
-        //mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
-
-        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-        startActivityForResult(intent, PICK_FROM_CAMERA);
-    }
 
     /**
      * 앨범에서 이미지 가져오기
@@ -421,55 +331,63 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
 
             case PICK_FROM_CAMERA:
             {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageCaptureUri);
+
+                    if(bitmap != null) {
+                        iv_UserPhoto.setImageBitmap(bitmap);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
-
-                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
-                // 이후에 이미지 크롭 어플리케이션을 호출.
-                Intent intent = new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImageCaptureUri, "image/*");
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-                // CROP할 이미지를 200*200 크기로 저장
-                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
-                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
-                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
-                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-                intent.putExtra("scale", true);
-                intent.putExtra("return-data", true);
-                startActivityForResult(intent, CROP_FROM_iMAGE); // CROP_FROM_CAMERA case문 이동
+//                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
+//                // 이후에 이미지 크롭 어플리케이션을 호출.
+//                Intent intent = new Intent("com.android.camera.action.CROP");
+//                intent.setDataAndType(mImageCaptureUri, "image/*");
+//                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//                // CROP할 이미지를 200*200 크기로 저장
+//                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
+//                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
+//                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
+//                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
+//                intent.putExtra("scale", true);
+//                intent.putExtra("return-data", true);
+//                startActivityForResult(intent, CROP_FROM_iMAGE); // CROP_FROM_CAMERA case문 이동
                 break;
             }
             case CROP_FROM_iMAGE:
             {
-                // 크롭이 된 이후의 이미지를 넘겨 받음.
-                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
-                // 임시 파일 삭제.
-                if(resultCode != RESULT_OK) {
-                    return;
-                }
-
-                final Bundle extras = data.getExtras();
-
-                // CROP된 이미지를 저장하기 위한 FILE 경로
-                String filePath = getContext().getExternalFilesDir("ProfileImage")+".jpg";
-
-                if(extras != null)
-                {
-                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
-                    iv_UserPhoto.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
-
-                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-                    absoultePath = filePath;
-                    break;
-
-                }
-                // 임시 파일 삭제
-                File f = new File(mImageCaptureUri.getPath());
-                if(f.exists())
-                {
-                    f.delete();
-                }
+//                // 크롭이 된 이후의 이미지를 넘겨 받음.
+//                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
+//                // 임시 파일 삭제.
+//                if(resultCode != RESULT_OK) {
+//                    return;
+//                }
+//
+//                final Bundle extras = data.getExtras();
+//
+//                // CROP된 이미지를 저장하기 위한 FILE 경로
+//                String filePath = getContext().getExternalFilesDir("ProfileImage")+".jpg";
+//
+//                if(extras != null)
+//                {
+//                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
+//                    iv_UserPhoto.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
+//
+//                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
+//                    absoultePath = filePath;
+//                    break;
+//
+//                }
+//                // 임시 파일 삭제
+//                File f = new File(mImageCaptureUri.getPath());
+//                if(f.exists())
+//                {
+//                    f.delete();
+//                }
             }
         }
 

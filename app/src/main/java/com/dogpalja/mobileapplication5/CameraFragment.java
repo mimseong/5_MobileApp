@@ -55,6 +55,10 @@ public class CameraFragment extends Fragment {
     Uri mImageUri;
 
 
+    String latitude = "35.887536", longitude = "128.611625";
+
+
+
 
     public CameraFragment() {
         // Required empty public constructor
@@ -236,17 +240,13 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
-
-
         }
-
     }
 
     private File getImageFile(){
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         imageName = timeStamp + "_";
         File storageDir = getContext().getExternalFilesDir("Images");
-
         File imageFile = new File(storageDir, imageName + ".jpg");
 
         return imageFile;
@@ -254,10 +254,14 @@ public class CameraFragment extends Fragment {
 
     private File getTxtFile(){
         File storageDir = getContext().getExternalFilesDir("PictureDate");
-
         File txtFile = new File(storageDir, imageName + ".ser");
-
         return txtFile;
+    }
+
+    private File getPositionFile(){
+        File storageDir = getContext().getExternalFilesDir("PinPosition");
+        File Position = new File(storageDir, imageName + ".ser");
+        return Position;
     }
 
     private void uploadStory(){
@@ -267,13 +271,17 @@ public class CameraFragment extends Fragment {
         }
 
         String imageToString = convertImageToString();
-        Map<String, String> imageMap = new HashMap<>();
 
+        Map<String, String> imageMap = new HashMap<>();
         imageMap.put("image_name", imageToString);
         imageMap.put("title", mStoryTitle);
         imageMap.put("time", picture_time);
+        writeSettings(imageMap, getTxtFile());
 
-        writeSettings(imageMap);
+        Map<String, String> pinMap = new HashMap<>();
+        imageMap.put("longitude", longitude);
+        imageMap.put("latitude", latitude);
+        writeSettings1(pinMap, getPositionFile());
 
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -283,9 +291,19 @@ public class CameraFragment extends Fragment {
         OkToUpload = false;
     }
 
-    public void writeSettings(Map<String, String> imageMap) {
-        File fileName = getTxtFile();
+    public void writeSettings1(Map<String, String> map, File fileOne){
+        try{
+            FileOutputStream fos=new FileOutputStream(fileOne);
+            ObjectOutputStream oos=new ObjectOutputStream(fos);
 
+            oos.writeObject(map);
+            oos.flush();
+            oos.close();
+            fos.close();
+        }catch(Exception e){}
+    }
+
+    public void writeSettings(Map<String, String> imageMap, File fileName) {
         FileOutputStream fos = null;
         ObjectOutputStream out = null;
         try {
@@ -311,15 +329,12 @@ public class CameraFragment extends Fragment {
     }
 
     private String convertImageToString(){
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,20,baos);
         byte[] imageByteArray = baos.toByteArray();
         String result =  Base64.encodeToString(imageByteArray,Base64.DEFAULT);
 
         return result;
-
-
     }
 
     //사진 미리보기에서 시간 표시
