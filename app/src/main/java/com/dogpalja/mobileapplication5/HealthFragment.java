@@ -18,6 +18,13 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class HealthFragment extends Fragment {
 
     TextView vomit_s, tagNum, eV1date, eV2date, eV3date, eV4date, eHdate, eRdate, eBefore;
@@ -26,7 +33,6 @@ public class HealthFragment extends Fragment {
     ImageButton bInsert, bInsert_w;
 
     String[] data;
-    String dog, vc1, vc1d, vc2, vc2d, vc3, vc3d, vc4, vc4d, vH, vhd, vR, vrd, weight, vo;
 
     private DatePickerDialog.OnDateSetListener callbackMethod1;
     private DatePickerDialog.OnDateSetListener callbackMethod2;
@@ -49,43 +55,108 @@ public class HealthFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_health, container, false);
 
-        data = new String[8];
+        data = new String[9];
 
-        eName = (EditText) view.findViewById(R.id.name);
+        init(view);             //변수 값 만들기
+        initString();           //String 배열 초기화
+        putOnClickListener();   //버튼에 onClick 함수 달기
+        saveResult();           //문자열 내장 메모리에 저장
 
-        eV1date = (TextView) view.findViewById(R.id.vaccin1_date);
-        eV2date = (TextView) view.findViewById(R.id.vaccin2_date);
-        eV3date = (TextView) view.findViewById(R.id.vaccin3_date);
-        eV4date = (TextView) view.findViewById(R.id.vaccin4_date);
-        eHdate = (TextView) view.findViewById(R.id.heartw_date);
-        eRdate = (TextView) view.findViewById(R.id.rabies_date);
+        try {
+            loadResult(getPositionFile());      //저장된 텍스트 값 불러오기
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        eNow = (EditText) view.findViewById(R.id.now);
 
-        eBefore = (TextView) view.findViewById(R.id.before);
+        Toast.makeText(getContext(), data[0], Toast.LENGTH_LONG).show();
 
-        vomit_s = (TextView) view.findViewById(R.id.select_vomit);
-        tagNum = (TextView) view.findViewById(R.id.insert_tn);
+        // Inflate the layout for this fragment
+        return view;
+    }
 
-        cV1 = (CheckBox) view.findViewById(R.id.vaccin1);
-        cV2 = (CheckBox) view.findViewById(R.id.vaccin2);
-        cV3 = (CheckBox) view.findViewById(R.id.vaccin3);
-        cV4 = (CheckBox) view.findViewById(R.id.vaccin4);
-        cH = (CheckBox) view.findViewById(R.id.heartw);
-        cR = (CheckBox) view.findViewById(R.id.rabies);
-        cNT = (CheckBox) view.findViewById(R.id.ntag);
-        cVomit = (CheckBox) view.findViewById(R.id.vomit);
-        cDiar = (CheckBox) view.findViewById(R.id.diar);
-        cNasal = (CheckBox) view.findViewById(R.id.nasal);
+    public void initString(){
+        data[0] = "댕댕";
+        for(int i = 1;  i < 7; i++){
+            data[i] = "날짜를 입력하세요";
+        }
+        data[7] = "0";
+        data[8] = "";
+    }
 
-        bInsert = (ImageButton) view.findViewById(R.id.insert);
-        bInsert_w = (ImageButton) view.findViewById(R.id.insert_w);
+    public void loadResult(File file) throws IOException {
+        BufferedReader br=new BufferedReader(new FileReader(file));
+        String line=null;
+
+        int i = 0;
+        while((line=br.readLine())!=null) {
+            data[i] = line;
+            i++;
+        }
+
+        setResult();        //불러온 문자열 setText해서 화면에 보여짐
+    }
+
+    public void setResult() {
+        eName.setText(data[0]);
+        eV1date.setText(data[1]);
+        eV2date.setText(data[2]);
+        eV3date.setText(data[3]);
+        eV4date.setText(data[4]);
+        eHdate.setText(data[5]);
+        eRdate.setText(data[6]);
+        eBefore.setText(data[7]);
+        vomit_s.setText(data[8]);
+    }
+
+    public void saveResult(){
+        writeSettings(getPositionFile());
+    }
+
+    public void writeSettings(File file){
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(file, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String writeTmp = "";
+
+        for(int i = 0; i < data.length; i++){
+            writeTmp += data[i] + '\n';
+        }
+
+        try {
+            // 기존 파일의 내용에 이어서 쓰려면 true를, 기존 내용을 없애고 새로 쓰려면 false를 지정한다.
+            writer.write(writeTmp);
+            writer.flush();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(writer != null) writer.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private File getPositionFile(){
+        File storageDir = getContext().getExternalFilesDir("HealthCheck");
+        File Position = new File(storageDir, "health.txt");
+        return Position;
+    }
+
+
+    //버튼 클릭하게 하는 부분 함수 분리함
+    public void putOnClickListener() {
 
         bInsert.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dog = eName.getText().toString();
-                data[0] = dog;
+                data[0] = eName.getText().toString();
                 Toast.makeText(getContext(), data[0]+"의 건강체크를 시작합니다",
                         Toast.LENGTH_LONG).show();
             }
@@ -94,54 +165,48 @@ public class HealthFragment extends Fragment {
         callbackMethod1 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vc1 = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eV1date.setText(vc1);
-                data[1] = vc1;
+                data[1] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eV1date.setText(data[1]);
             }
         };
 
         callbackMethod2 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vc2 = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eV2date.setText(vc2);
-                data[2] = vc2;
+                data[2] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eV2date.setText(data[2]);
             }
         };
 
         callbackMethod3 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vc3 = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eV3date.setText(vc3);
-                data[3] = vc3;
+                data[3] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eV3date.setText(data[3]);
             }
         };
 
         callbackMethod4 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vc4 = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eV4date.setText(vc4);
-                data[4] = vc4;
+                data[4] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eV4date.setText(data[4]);
             }
         };
 
         callbackMethodH = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vH = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eHdate.setText(vH);
-                data[5] = vH;
+                data[5] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eHdate.setText(data[5]);
             }
         };
 
         callbackMethodR = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vR = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
-                eRdate.setText(vR);
-                data[6] = vR;
+                data[6] = "접종일 : " + year + "년  " + monthOfYear + 1 + "월  " + dayOfMonth + "일";
+                eRdate.setText(data[6]);
             }
         };
 
@@ -152,9 +217,8 @@ public class HealthFragment extends Fragment {
                     DatePickerDialog dialog = new DatePickerDialog(getContext(), callbackMethod1, 2019, 12, 19);
                     dialog.show();
                 } else {
-                    vc1d = "접종일을 입력해주세요";
-                    eV1date.setText(vc1d);
-                    data[1] = vc1d;
+                    data[1] = "접종일을 입력해주세요";
+                    eV1date.setText(data[1]);
                 }
             }
         });
@@ -166,9 +230,8 @@ public class HealthFragment extends Fragment {
                     DatePickerDialog dialog = new DatePickerDialog(getContext(), callbackMethod2, 2019, 12, 19);
                     dialog.show();
                 } else {
-                    vc2d = "접종일을 입력해주세요";
-                    eV2date.setText(vc2d);
-                    data[2] = vc2d;
+                    data[2] = "접종일을 입력해주세요";
+                    eV2date.setText(data[2]);
                 }
             }
         });
@@ -181,9 +244,8 @@ public class HealthFragment extends Fragment {
                     dialog.show();
 
                 } else {
-                    vc3d = "접종일을 입력해주세요";
-                    eV3date.setText(vc3d);
-                    data[3] = vc3d;
+                    data[3] = "접종일을 입력해주세요";
+                    eV3date.setText(data[3]);
                 }
             }
         });
@@ -195,9 +257,8 @@ public class HealthFragment extends Fragment {
                     DatePickerDialog dialog = new DatePickerDialog(getContext(), callbackMethod4, 2019, 12, 19);
                     dialog.show();
                 } else {
-                    vc4d = "접종일을 입력해주세요";
-                    eV4date.setText(vc4d);
-                    data[4] = vc4d;
+                    data[4] = "접종일을 입력해주세요";
+                    eV4date.setText(data[4]);
                 }
             }
         });
@@ -209,9 +270,8 @@ public class HealthFragment extends Fragment {
                     DatePickerDialog dialog = new DatePickerDialog(getContext(), callbackMethodH, 2019, 12, 19);
                     dialog.show();
                 } else {
-                    vhd = "접종일을 입력해주세요";
-                    eHdate.setText(vhd);
-                    data[5] = vhd;
+                    data[5] = "접종일을 입력해주세요";
+                    eHdate.setText(data[5]);
                 }
             }
         });
@@ -223,9 +283,8 @@ public class HealthFragment extends Fragment {
                     DatePickerDialog dialog = new DatePickerDialog(getContext(), callbackMethodR, 2019, 12, 19);
                     dialog.show();
                 } else {
-                    vrd = "접종일을 입력해주세요";
-                    eRdate.setText(vrd);
-                    data[6] = vrd;
+                    data[6] = "접종일을 입력해주세요";
+                    eRdate.setText(data[6]);
                 }
             }
         });
@@ -245,9 +304,8 @@ public class HealthFragment extends Fragment {
         bInsert_w.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                weight = eNow.getText().toString();
-                eBefore.setText(weight);
-                data[6] = weight;
+                data[7] = eNow.getText().toString();
+                eBefore.setText(data[7]);
             }
         });
 
@@ -288,9 +346,8 @@ public class HealthFragment extends Fragment {
                                                     Toast.LENGTH_LONG).show();
                                             break;
                                     }
-                                    vo = "상태 : " + vomitArray[which];
-                                    vomit_s.setText(vo);
-                                    data[7] = vo;
+                                    data[8] = "상태 : " + vomitArray[which];
+                                    vomit_s.setText(data[8]);
                                 }
                             });
                     dlg.setPositiveButton("닫기", null);
@@ -298,9 +355,8 @@ public class HealthFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "구토는 멈췄나요? 뭐니뭐니해도 건강이 최고!",
                             Toast.LENGTH_LONG).show();
-                    vo = "상태 : 건강함 :)";
-                    vomit_s.setText(vo);
-                    data[7] = vo;
+                    data[8] = "상태 : 건강함 :)";
+                    vomit_s.setText(data[8]);
                 }
             }
         });
@@ -331,7 +387,38 @@ public class HealthFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
-        return view;
+    }
+
+    //View에 추가하는 부분
+    public void init(View view){
+        eName = (EditText) view.findViewById(R.id.name);
+
+        eV1date = (TextView) view.findViewById(R.id.vaccin1_date);
+        eV2date = (TextView) view.findViewById(R.id.vaccin2_date);
+        eV3date = (TextView) view.findViewById(R.id.vaccin3_date);
+        eV4date = (TextView) view.findViewById(R.id.vaccin4_date);
+        eHdate = (TextView) view.findViewById(R.id.heartw_date);
+        eRdate = (TextView) view.findViewById(R.id.rabies_date);
+
+        eNow = (EditText) view.findViewById(R.id.now);
+
+        eBefore = (TextView) view.findViewById(R.id.before);
+
+        vomit_s = (TextView) view.findViewById(R.id.select_vomit);
+        tagNum = (TextView) view.findViewById(R.id.insert_tn);
+
+        cV1 = (CheckBox) view.findViewById(R.id.vaccin1);
+        cV2 = (CheckBox) view.findViewById(R.id.vaccin2);
+        cV3 = (CheckBox) view.findViewById(R.id.vaccin3);
+        cV4 = (CheckBox) view.findViewById(R.id.vaccin4);
+        cH = (CheckBox) view.findViewById(R.id.heartw);
+        cR = (CheckBox) view.findViewById(R.id.rabies);
+        cNT = (CheckBox) view.findViewById(R.id.ntag);
+        cVomit = (CheckBox) view.findViewById(R.id.vomit);
+        cDiar = (CheckBox) view.findViewById(R.id.diar);
+        cNasal = (CheckBox) view.findViewById(R.id.nasal);
+
+        bInsert = (ImageButton) view.findViewById(R.id.insert);
+        bInsert_w = (ImageButton) view.findViewById(R.id.insert_w);
     }
 }

@@ -13,9 +13,15 @@
         name="Profile"
         path="Android/data/com.dogpalja.mobileapplication5/files/Profile"/>
     <external-path
+        name="ProfileTxt"
+        path="Android/data/com.dogpalja.mobileapplication5/files/ProfileTxt"/>
+    <external-path
         name="PictureDate"
         path="Android/data/com.dogpalja.mobileapplication5/files/PictureDate"/>
     <external-path
         name="PinPosition"
         path="Android/data/com.dogpalja.mobileapplication5/files/PinPosition"/>
+    <external-path
+        name="HealthCheck"
+        path="Android/data/com.dogpalja.mobileapplication5/files/HealthCheck"/>
 </paths>
