@@ -125,7 +125,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                Toast.makeText(getContext(), "클릭됨",Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getContext().getApplicationContext(), GridItemActivity.class);
                 intent.putExtra("image_tags", storyTitleV.elementAt(i));
@@ -305,8 +304,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        // 임시로 사용할 파일의 경로를 생성
-        //String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 
         File photoFile = null;
         try {
@@ -321,12 +318,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                     photoFile);
         }
 
-//        mImageCaptureUri = FileProvider.getUriForFile(
-//                getContext(),
-//                getContext().getApplicationContext().getPackageName() + ".fileprovider",
-//                new File(Environment.getExternalStorageDirectory(),
-//                        url));
-        //mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
 
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
         startActivityForResult(intent, PICK_FROM_CAMERA);
@@ -604,7 +595,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
                 // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
                 // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
                 main_label.setText(name.getText().toString());
-                //Toast.makeText(context, "\"" +  name.getText().toString() + "\" 을 입력하였습니다.", Toast.LENGTH_SHORT).show();
 
                 // 커스텀 다이얼로그를 종료한다.
                 dlg.dismiss();
@@ -613,9 +603,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(context, "취소 했습니다.", Toast.LENGTH_SHORT).show();
-
-                // 커스텀 다이얼로그를 종료한다.
                 dlg.dismiss();
             }
         });
