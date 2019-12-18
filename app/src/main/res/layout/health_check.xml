@@ -119,7 +119,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="1차"
-                        android:onClick="OnClickDataPicker"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -146,7 +145,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="2차"
-                        android:onClick="OnClickDataPicker2"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -173,7 +171,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="3차"
-                        android:onClick="OnClickDataPicker3"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -200,7 +197,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="4차"
-                        android:onClick="OnClickDataPicker4"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -236,7 +232,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:onClick="OnClickDataPickerH"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -271,7 +266,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:onClick="OnClickDataPickerR"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                     <TextView
@@ -317,8 +311,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:onClick="onNameTagClicked"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/insert_tn"
