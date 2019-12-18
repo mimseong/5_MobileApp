@@ -6,13 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,9 +32,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Vector;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
@@ -46,14 +51,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public static MapView mapView;
     public static GoogleMap mMap;
 
+    //파일입출력
+    File[] files;
+    File storageDir;
+
+
+
+    //경도위도 배열
+    Vector<String> latitudeV;
+    Vector<String> longitudeV;
+
     //현재 위치 받아오기
     private LocationManager locationManager;
     Location currentLocation = null;
     private static final int REQUEST_CODE_LOCATION =2;
-    //////////////////////////////////
+
     public MapFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -77,15 +93,82 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.activity_story_map, container, false);
+
+        //파일 불러오는 함수
+        storageDir = getContext().getExternalFilesDir("PinPosition");
+        files = storageDir.listFiles();
+
+
+        latitudeV = new Vector<String>(files.length);
+        longitudeV = new Vector<String>(files.length);
+
+        for(int j = 0; j < files.length; j++) {
+
+        }
+
+            // Inflate the layout for this fragment
+
         mapView = (MapView) rootView.findViewById(R.id.mapview);
-      mapView.onCreate(savedInstanceState);
-       mapView.getMapAsync(this);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
+
 
         return rootView;
     }
 
+    public void MakeList(Map<String, String> map, File toRead){
+        try{
+            FileInputStream fis=new FileInputStream(toRead);
+            ObjectInputStream ois=new ObjectInputStream(fis);
+
+            HashMap<String,String> mapInFile=(HashMap<String,String>)ois.readObject();
+
+            ois.close();
+            fis.close();
+            //print All data in MAP
+            for(Map.Entry<String,String> m :mapInFile.entrySet()){
+                System.out.println(m.getKey()+" : "+m.getValue());
+            }
+        }catch(Exception e){}
+    }
+
+    //    public void MakeList() throws IOException, ClassNotFoundException {
+//        for(int j = 0; j < files.length; j++) {
+//            FileInputStream fileStream = null;
+//            fileStream = new FileInputStream(storageDir.getAbsolutePath() + "/" + files[j].getName());
+//
+//            ObjectInputStream objectInputStream = null;
+//            objectInputStream = new ObjectInputStream(fileStream);
+//
+//            Object object = null;
+//            object = objectInputStream.readObject();
+//
+//            objectInputStream.close();
+//
+//            HashMap hashMap = (HashMap) object;
+//
+//            Iterator<String> it = hashMap.keySet().iterator();
+//
+//            Toast.makeText(getContext(), "여기 " + Integer.toString(j), Toast.LENGTH_SHORT).show();
+//
+//            while(it.hasNext()) {
+//                Toast.makeText(getContext(), "존재", Toast.LENGTH_SHORT).show();
+//                String key = it.next();
+//                String value = (String) hashMap.get(key);
+//
+//                if(key.equals("latitude")){
+//                    latitudeV.addElement(value);
+//                    //Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
+//
+//                } else if (key.equals("longitude")) {
+//                    longitudeV.addElement(value);
+//                    //Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -196,9 +279,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 return false;
             }
         });
-
-
     }
+
+
 
 
     //내 위치 받아오기~
