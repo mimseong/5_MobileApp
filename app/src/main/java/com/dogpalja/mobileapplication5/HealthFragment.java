@@ -49,7 +49,7 @@ public class HealthFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_health, container, false);
 
-        data = new String[8];
+        data = new String[9];
 
         eName = (EditText) view.findViewById(R.id.name);
 
@@ -247,7 +247,7 @@ public class HealthFragment extends Fragment {
             public void onClick(View view) {
                 weight = eNow.getText().toString();
                 eBefore.setText(weight);
-                data[6] = weight;
+                data[7] = weight;
             }
         });
 
@@ -290,7 +290,7 @@ public class HealthFragment extends Fragment {
                                     }
                                     vo = "상태 : " + vomitArray[which];
                                     vomit_s.setText(vo);
-                                    data[7] = vo;
+                                    data[8] = vo;
                                 }
                             });
                     dlg.setPositiveButton("닫기", null);
@@ -300,7 +300,7 @@ public class HealthFragment extends Fragment {
                             Toast.LENGTH_LONG).show();
                     vo = "상태 : 건강함 :)";
                     vomit_s.setText(vo);
-                    data[7] = vo;
+                    data[8] = vo;
                 }
             }
         });
