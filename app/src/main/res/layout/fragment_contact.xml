@@ -45,7 +45,7 @@
             android:background="@drawable/round_button_1"
             android:drawableTop="@drawable/ic_call_black"
             android:drawablePadding="10dp"
-            android:text="전화"
+            android:text="010-1234-5678"
             android:id="@+id/btn_call"
             android:layout_weight="1"
             />
@@ -57,7 +57,7 @@
             android:background="@drawable/round_button_1"
             android:drawableTop="@drawable/ic_email_black"
             android:drawablePadding="10dp"
-            android:text="이메일"
+            android:text="XXXXX@XXX.XXXX"
             android:id="@+id/btn_mail"
             android:layout_weight="1"
             />
