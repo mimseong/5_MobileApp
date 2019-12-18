@@ -41,10 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HealthMain"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.dogpalja.mobileapplication5"
