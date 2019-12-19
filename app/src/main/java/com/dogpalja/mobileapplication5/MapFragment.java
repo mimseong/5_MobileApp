@@ -142,8 +142,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
             googleMap.addMarker(markerOptions);
         }
-        markerOptions.position(new LatLng(32, 32));
-        googleMap.addMarker(markerOptions);
+
         //맵 위치 찍기.
         MapsInitializer.initialize(this.getActivity());
         //    getAddress(getContext(), currentLocation.getLatitude(), currentLocation.getLongitude()); 위치받아오는 getadderess
