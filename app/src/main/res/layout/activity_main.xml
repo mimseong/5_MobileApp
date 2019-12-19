@@ -41,6 +41,7 @@
             app:itemIconTint="@color/bottom_select_color"
             app:itemTextColor="@color/bottom_select_color"
             app:itemIconSize="20dp"
+            android:elevation="4dp"
             android:layout_alignParentBottom="true"
             android:background="@color/background"
             />
