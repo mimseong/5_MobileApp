@@ -27,7 +27,7 @@
                 android:background="@color/white"
                 android:padding="20dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:id="@+id/dogPicture"

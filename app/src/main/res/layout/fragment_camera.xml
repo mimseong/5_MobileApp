@@ -35,20 +35,15 @@
 
         <!--Middle Layout-->
 
-<!--        <com.dogpalja.mobileapplication5.SquareImageView-->
-<!--            android:id="@+id/moment_selected_photo"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/upper_part_layout"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:background="#e5e5e5"/>-->
-
-        <ImageView
+        <com.dogpalja.mobileapplication5.SquareImageView
             android:id="@+id/moment_selected_photo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/upper_part_layout"
-            android:background="@color/background"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/captured_img"/>
+
+
 
 
         <!-- Lower Relative Layout-->
