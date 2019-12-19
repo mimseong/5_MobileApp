@@ -47,7 +47,7 @@ import java.util.Map;
 import static android.app.Activity.RESULT_OK;
 
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends Fragment{
     ImageView moment_selected_photo;
 
     Button moment_ok_btn, btn_capture_img;
@@ -79,11 +79,15 @@ public class CameraFragment extends Fragment {
         }
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
         if(lastKnownLocation != null){
             double lng = lastKnownLocation.getLongitude();
             double lat = lastKnownLocation.getLatitude();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, gpsLocationListener);
             latitude = Double.toString(lat); // string 으로 변환
             longitude = Double.toString(lng);
+            Toast.makeText(getContext(),latitude+ "      " + longitude ,Toast.LENGTH_LONG).show();
+            //Toast.makeText(getContext(),longitude,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -345,8 +349,7 @@ public class CameraFragment extends Fragment {
         return timestamp.toString();
     }
 
-
-    final LocationListener gpsLocationListener = new LocationListener() {
+     final LocationListener gpsLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             double lon = location.getLongitude();

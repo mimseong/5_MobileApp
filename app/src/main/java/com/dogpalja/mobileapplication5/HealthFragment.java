@@ -86,7 +86,7 @@ public class HealthFragment extends Fragment {
     }
 
     public void initString(){
-        data[0] = "댕댕";
+        data[0] = "이름";
         for(int i = 1;  i < 7; i++){
             data[i] = "날짜를 입력하세요";
         }
