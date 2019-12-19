@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -71,6 +72,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_IMAGE = 2;
     private static final int REQUEST_FOR_CAMERA = 3;
+    private static final int CAPTURE_IMAGE = 4;
 
     private Uri mImageCaptureUri;
     private CircleImageView iv_UserPhoto;
@@ -79,6 +81,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     private int id_view;
     private String absoultePath;
     GridView gridview;
+    Uri mImageUri;
 
 
     //성민 추가 변수
@@ -104,7 +107,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_moment, container, false);
 
-        iv_UserPhoto = view.findViewById(R.id.profile_image);
+        iv_UserPhoto = (CircleImageView) view.findViewById(R.id.profile_image);
         iv_UserPhoto.setOnClickListener(this);
 
         tv_name = (TextView) view.findViewById(R.id.display_name);
@@ -138,6 +141,7 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         });
 
         initString();
+        loadProfileImg();
 
 
         try {
@@ -175,6 +179,17 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
             else
                 tv_sub_name.setText(line);
             i++;
+        }
+    }
+
+    public void loadProfileImg(){
+        File imgFile = getImageFile1();
+
+        if(imgFile.exists()){
+            Bitmap bitmap_tmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            Bitmap myBitmap = rotateBitmap(bitmap_tmp, 90);
+
+            iv_UserPhoto.setImageBitmap(myBitmap);
         }
     }
 
@@ -292,40 +307,41 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         id_view = v.getId();
         if(id_view == R.id.profile_image) {
-            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-//                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            capturePhoto1();
+//            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+////                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+////                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
+////                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+////                    }
+//                    if(!checkPermission()){
 //                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
-//                        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-//                    }
-                    if(!checkPermission()){
-                        ((CircleImageView)getView().findViewById(R.id.profile_image)).setEnabled(false);
-                    };
-                    doTakePhotoAction();
-                }
-            };
-            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    doTakeAlbumAction();
-                }
-            };
-
-            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            };
-
-            new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle)
-                    .setTitle("업로드할 이미지 선택")
-                    .setPositiveButton("사진촬영", cameraListener)
-                    .setNeutralButton("앨범선택", albumListener)
-                    .setNegativeButton("취소", cancelListener)
-                    .show()
-                    .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//                    };
+//                    doTakePhotoAction();
+//                }
+//            };
+//            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    doTakeAlbumAction();
+//                }
+//            };
+//
+//            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            };
+//
+//            new AlertDialog.Builder(getActivity(), R.style.CustomDialogStyle)
+//                    .setTitle("업로드할 이미지 선택")
+//                    .setPositiveButton("사진촬영", cameraListener)
+//                    .setNeutralButton("앨범선택", albumListener)
+//                    .setNegativeButton("취소", cancelListener)
+//                    .show()
+//                    .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
         else if(id_view == R.id.display_name) {
             final TextView name = (TextView) getView().findViewById(id_view);
@@ -358,9 +374,6 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
         return true;
     }
 
-
-
-    /////성민 추가 부분
 
     //사진 촬영 함수
     private void doTakePhotoAction(){
@@ -406,98 +419,74 @@ public class MomentFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    /////성민 추가 부분 끝
+    //사진 촬영 함수
+    private void capturePhoto1(){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
-    /**
-     * 앨범에서 이미지 가져오기
-     */
-    public void doTakeAlbumAction() // 앨범에서 이미지 가져오기
-    {
-        // 앨범 호출
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            File imageFile = null;
+            imageFile = getImageFile1();
+
+            if (imageFile != null){
+                mImageUri = FileProvider.getUriForFile(getContext(), "com.dogpalja.mobileapplication5", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageUri);
+            }
+
+            startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+
+        }
+    }
+
+    public Bitmap rotateBitmap(Bitmap source, float degree){
+        try{
+            //원본 이미지의 가로, 세로 길이를 구한다.
+            int targetWidth = source.getWidth();
+            int targetHight = source.getHeight();
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(degree);
+            Bitmap resizeBitmap = Bitmap.createBitmap(source, 0, 0, targetWidth, targetHight, matrix, true);
+            source.recycle();
+
+            return resizeBitmap;
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode != RESULT_OK)
-            return;
+        if(requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK){
 
-        switch(requestCode)
-        {
-            case PICK_FROM_ALBUM:
-            {
-                // 이후의 처리가 카메라와 같으므로 일단  break없이 진행
-                mImageCaptureUri = data.getData();
-                Log.d("Profile",mImageCaptureUri.getPath().toString());
-            }
+            try {
+                Bitmap bitmap_tmp = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),mImageUri);
+                Bitmap bitmap = rotateBitmap(bitmap_tmp, 90);
 
-            case PICK_FROM_CAMERA:
-            {
-                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정.
-                // 이후에 이미지 크롭 어플리케이션을 호출.
-//                getActivity().grantUriPermission("com.android.camera", mImageCaptureUri,
-//                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                Intent intent = new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImageCaptureUri, "image/*");
-                Log.d("image", "mImageCaptureUri: " + mImageCaptureUri);
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-//                List<ResolveInfo> list = getActivity().getPackageManager().queryIntentActivities(intent, 0);
-//                getActivity().grantUriPermission(list.get(0).activityInfo.packageName, mImageCaptureUri,
-//                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                // CROP할 이미지를 200*200 크기로 저장
-                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
-                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
-                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
-                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-                intent.putExtra("scale", true);
-                intent.putExtra("return-data", true);
-                startActivityForResult(intent, CROP_FROM_IMAGE); // CROP_FROM_CAMERA case문 이동
-                break;
-            }
-            case CROP_FROM_IMAGE:
-            {
-                // 크롭이 된 이후의 이미지를 넘겨 받음.
-                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
-                // 임시 파일 삭제.
-                if(resultCode != RESULT_OK) {
-                    return;
+                if(bitmap != null) {
+                    iv_UserPhoto.setImageBitmap(bitmap);
                 }
-
-                final Bundle extras = data.getExtras();
-
-                // CROP된 이미지를 저장하기 위한 FILE 경로
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
-                        "/SmartWheel/"+System.currentTimeMillis()+".jpg";
-
-                if(extras != null)
-                {
-                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
-                    iv_UserPhoto.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
-
-                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-                    absoultePath = filePath;
-                    break;
-
-                }
-                // 임시 파일 삭제
-                File f = new File(mImageCaptureUri.getPath());
-                if(f.exists())
-                {
-                    f.delete();
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            Toast.makeText(getContext(),"이제 완료 버튼을 눌러주세요!",Toast.LENGTH_LONG).show();
         }
-
-
     }
+
+    private File getImageFile1(){
+        File storageDir = getContext().getExternalFilesDir("Profile");
+        File imageFile = new File(storageDir, "profileImg" + ".jpg");
+
+        return imageFile;
+    }
+
+    ///
 
     public static String getPath(final Context context, final Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
